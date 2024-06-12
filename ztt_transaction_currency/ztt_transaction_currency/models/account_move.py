@@ -121,11 +121,10 @@ class AccountMove(models.Model):
                     # Same foreign currency.
                     amount = abs(line.amount_residual_currency)
                 else:
-                    import pdb;pdb.set_trace()
                     # Different foreign currencies.
                     amount = line.company_currency_id._convert(
                         abs(line.amount_residual),
-                        move.currency_id and move.currency_id.with_context(currency_rate=move.currency_rate) or move.currency_id,
+                        move.currency_id.with_context(currency_rate=move.currency_rate),
                         move.company_id,
                         line.date,
                     )
@@ -155,7 +154,6 @@ class AccountMove(models.Model):
                 continue
 
             to_write = []
-
             amount_currency = abs(move.amount_total)
             balance = move.currency_id.with_context(currency_rate=move.currency_rate)._convert(amount_currency, move.company_currency_id.with_context(currency_rate=1), move.company_id, move.invoice_date or move.date)
 
@@ -344,3 +342,18 @@ class AccountMoveLine(models.Model):
                 fiscal_position=line.move_id.fiscal_position_id,
                 product_uom=line.product_uom_id,
             )
+
+    @api.depends('currency_id', 'company_id', 'move_id.date')
+    def _compute_currency_rate(self):
+        for line in self:
+            if line.currency_id:
+                # line.currency_rate = line.move_id.currency_rate
+                # line.currency_rate = self.env['res.currency']._get_conversion_rate(
+                #     from_currency=line.company_currency_id,
+                #     to_currency=line.currency_id,
+                #     company=line.company_id,
+                #     date=line.move_id.invoice_date or line.move_id.date or fields.Date.context_today(line),
+                # )
+                line.currency_rate = 1/line.move_id.currency_rate
+            else:
+                line.currency_rate = 1
