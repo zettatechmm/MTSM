@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_request_tree" model="ir.ui.view">
+            <field name="name">partner.request.tree</field>
+            <field name="model">partner.request</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Request">
+                    <field name="name" optional="show"/>
+                    <field name="phone" optional="show"/>
+                    <field name="mobile" optional="hide"/>
+                    <field name="email" optional="show"/>
+                    <field name="street" optional="hide"/>
+                    <field name="street2" optional="hide"/>
+                    <field name="city_village_id" optional="show"/>
+                    <field name="township_id" optional="show"/>
+                    <field name="state_id" optional="hide"/>
+                    <field name="country_id" optional="show"/>
+                    <field name="birthday" optional="hide"/>
+                    <field name="vat" optional="hide"/>
+                    <field name="category_id" optional="hide"/>
+                    <field name="website" optional="hide"/>
+                    <field name="title" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_partner_request_form" model="ir.ui.view">
+            <field name="name">partner.request.form</field>
+            <field name="model">partner.request</field>
+            <field name="arch" type="xml">
+                <form string="Customer Request">
+                    <header>
+                        <field name="is_partner_request" invisible="1"/>
+                        <field name="state" widget="statusbar" invisible="not is_partner_request"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <field name="image" widget='image' class="oe_avatar"/>
+                        <div class="oe_title mb24">
+                            <field name="is_company" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="country_code" invisible="1"/>
+                            <field name="company_type" widget="radio" options="{'horizontal': true}"/>
+                            <h1>
+                                <field id="company" options="{'line_breaks': False}" widget="text"
+                                       class="text-break" name="name" default_focus="1" readonly="0"
+                                       placeholder="e.g. Lumber Inc" invisible="not is_company"
+                                       required="type == 'contact'"/>
+                                <field id="individual" options="{'line_breaks': False}" widget="text"
+                                       class="text-break" name="name" default_focus="1" readonly="0"
+                                       placeholder="e.g. Brandom Freeman" invisible="is_company"
+                                       required="type == 'contact'"/>
+                            </h1>
+                            <div class="o_row">
+                                <field name="parent_id" readonly="0"
+                                       widget="res_partner_many2one"
+                                       placeholder="Company Name..."
+                                       context="{'default_is_company': True, 'show_vat': True, }"
+                                       invisible="((is_company and not parent_id) or company_name) and company_name != ''"/>
+                                <field name="company_name" readonly="0"
+                                       invisible="not company_name or company_name == '' or is_company"/>
+                            </div>
+                        </div>
+                        <group>
+                            <group>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <field name="type" invisible="is_company"
+                                           required="not is_company" class="fw-bold"/>
+                                    <b invisible="not is_company">Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"
+                                           readonly="type == 'contact' and parent_id"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                           readonly="type == 'contact' and parent_id"/>
+                                    <div class="o_row">
+                                        <div class="col-md-6">
+                                            <field name="city_village_id" placeholder="City/Village" readonly="0"
+                                                   options='{"no_open": True, "no_create": True}' required="1"
+                                                   domain="[('township_id', '=', township_id)]"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <field name="township_id" placeholder="Township" readonly="0"
+                                                   options='{"no_open": True, "no_create": True}' required="1"
+                                                   domain="[('state_id', '=', state_id)]"/>
+                                        </div>
+                                    </div>
+                                    <field name="state_id" class="o_address_state" placeholder="State" required="1"
+                                           options="{'no_open': True, 'no_quick_create': True}"
+                                           readonly="type == 'contact' and parent_id"
+                                           context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"
+                                           readonly="type == 'contact' and parent_id"/>
+                                    <div name="partner_address_country" class="d-flex justify-content-between">
+                                        <field name="country_id" placeholder="Country" class="o_address_country"
+                                               options='{"no_open": True, "no_create": True}' required="1"
+                                               readonly="type == 'contact' and parent_id"/>
+                                    </div>
+                                </div>
+                                <field name="vat" placeholder="e.g. BE0477472701" readonly="parent_id"/>
+                                <field name="is_rubber" readonly="0"/>
+                                <field name="payment_term_id" readonly="0"/>
+                                <field name="pricelist_id" readonly="0"/>
+                            </group>
+                            <group>
+                                <field name="function" placeholder="e.g. Sales Director" readonly="0"
+                                       invisible="is_company"/>
+                                <field name="phone" widget="phone" readonly="0"/>
+                                <field name="mobile" widget="phone" readonly="0" required="1"/>
+                                <field name="birthday" readonly="0"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"
+                                       readonly="0"/>
+                                <field name="facebook" string="Facebook Link" widget="url" readonly="0"
+                                       placeholder="e.g. https://www.facebook.com/"/>
+                                <field name="website" string="Website" widget="url" readonly="0"
+                                       placeholder="e.g. https://www.odoo.com"/>
+                                <field name="title" options='{"no_open": True}' placeholder="e.g. Mister" readonly="0"
+                                       invisible="is_company"/>
+                                <field name="category_id" widget="many2many_tags" readonly="0" required="1"
+                                       options="{'color_field': 'color', 'no_create_edit': True}"
+                                       placeholder='e.g. "B2B", "VIP", "Consulting", ...'/>
+                                <field name="crm_tag_ids" widget="many2many_tags" readonly="0" required="0"
+                                       options="{'color_field': 'color', 'no_create_edit': True}"
+                                       placeholder='e.g. "ALR", "ALP", "RSR", ...'/>
+                                <field name='industry_id' invisible="not is_company" options="{'no_create': True}" />
+                                <field name="is_submitted" invisible="1"/>
+                            </group>
+                        </group>
+                        <div class="row" style="width:100%">
+                            <div class="col-4" style="width:48%">
+                            </div>
+                            <div class="col-4" style="width:30%">
+                                <button string="Approve" name="submit_new_customer" type="object"
+                                        invisible="is_submitted == True"
+                                        class="oe_highlight"/>
+                            </div>
+                            <div class="col-4" style="width:22%">
+                            </div>
+                        </div>
+                        <notebook colspan="4">
+                            <page name="internal_notes" string="Internal Notes">
+                                <field name="comment" placeholder="Internal notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_partner_request" model="ir.actions.act_window">
+            <field name="name">Customer Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.request</field>
+            <field name="view_id" ref="view_partner_request_tree"/>
+        </record>
+
+        <menuitem name="Customer Request" id="menu_partner_request" action="action_partner_request"
+                  parent="crm.crm_menu_sales"
+                  sequence="7"/>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_city_village_group_all,All access for City Village,model_city_village,base.group_user,1,1,1,1
+access_res_township_group_all,All access for Township,model_res_township,base.group_user,1,1,1,1
+access_partner_request_group_all,All access for Partner Request,model_partner_request,base.group_user,1,1,1,1
