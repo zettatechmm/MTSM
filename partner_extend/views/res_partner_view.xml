@@ -1,0 +1,93 @@
+<odoo>
+    <!--  Custom Field Added To Contact Form  -->
+    <record id="view_partner_form_township" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="is_rubber"/>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='website']" position="before">
+                <field name="facebook" string="Facebook Link" widget="url" readonly="0" placeholder="e.g. https://www.facebook.com/"/>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="crm_tag_ids" widget="many2many_tags" readonly="0" required="0"
+                                       options="{'color_field': 'color', 'no_create_edit': True}"
+                                       placeholder='e.g. "ALR", "ALP", "RSR", ...'/>
+            </xpath>
+
+            <xpath expr="//field[@name='street2']" position="after">
+                <div class="o_row">
+                    <div class="col-md-6">
+                        <field name="city_village_id" placeholder="City/Village"
+                               options='{"no_open": True, "no_create": True}'
+                               domain="[('township_id', '=', township_id)]"/>
+                    </div>
+                    <div class="col-md-6">
+                        <field name="township_id" placeholder="Township" options='{"no_open": True, "no_create": True}'
+                               domain="[('state_id', '=', state_id)]"/>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='misc']/field[@name='ref']" position='replace'>
+                <label string="Reference" for='ref'/>
+                <div>
+                    <field name='ref' class='oe_inline' readonly='1'/>   <button name="action_get_reference" type="object" icon="fa-refresh" role="img" title="Generate Reference" confirm="Are you sure you want to generate new reference code."/>
+                </div>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="action_generate_reference" model="ir.actions.server">
+        <field name="name">Generate Reference</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_get_reference()
+        </field>
+    </record>
+
+    <!--  Custom Field Added To Contact Tree  -->
+    <record id="view_partner_tree_township" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='city']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="after">
+                <field name="city_village_id" optional="show"/>
+                <field name="township_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--  Custom Field Added To Contact GroupBy Filter  -->
+    <record id="view_res_partner_filter_township" model="ir.ui.view">
+        <field name="name">res.partner.select.township</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <field name='name' position='after'>
+                <field name='ref'/>
+            </field>
+            <xpath expr="//search//group" position="inside">
+                <filter name="group_township" string="Township" context="{'group_by': 'township_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

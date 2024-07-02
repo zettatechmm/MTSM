@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_city_village_tree" model="ir.ui.view">
+            <field name="name">city.village.tree</field>
+            <field name="model">city.village</field>
+            <field name="arch" type="xml">
+                <tree string="City/Village">
+                    <field name="name" optional="show"/>
+                    <field name="township_id" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_city_village_form" model="ir.ui.view">
+            <field name="name">city.village.form</field>
+            <field name="model">city.village</field>
+            <field name="arch" type="xml">
+                <form string="City/Village">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1" readonly="0"/>
+                                <field name="township_id" required="1" readonly="0"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_city_village" model="ir.actions.act_window">
+            <field name="name">City/Village</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">city.village</field>
+            <field name="view_id" ref="view_city_village_tree"/>
+        </record>
+
+        <menuitem name="City/Village" id="menu_city_village" action="action_city_village" parent="contacts.menu_localisation"
+                  sequence="7"/>
+    </data>
+</odoo>
