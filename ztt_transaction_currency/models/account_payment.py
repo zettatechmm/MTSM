@@ -24,7 +24,7 @@ class AccountPayment(models.Model):
             'currency_id', 'partner_id', 'destination_account_id', 'partner_bank_id', 'journal_id', 'currency_rate'
         )
 
-    def _prepare_move_line_default_vals(self, write_off_line_vals=None):
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
         ''' Prepare the dictionary to create the default account.move.lines for the current payment.
         :param write_off_line_vals: Optional list of dictionaries to create a write-off account.move.line easily containing:
             * amount:       The amount to be added to the counterpart amount.
