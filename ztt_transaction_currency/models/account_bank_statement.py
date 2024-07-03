@@ -50,7 +50,7 @@ class AccountBankStatementLine(models.Model):
                     date=st_line.date,
                 )
 
-    def _prepare_move_line_default_vals(self, counterpart_account_id=None):
+    def _prepare_move_line_default_vals(self, counterpart_account_id=None, force_balance=None):
         """ Prepare the dictionary to create the default account.move.lines for the current account.bank.statement.line
         record.
         :return: A list of python dictionary to be passed to the account.move.line's 'create' method.
