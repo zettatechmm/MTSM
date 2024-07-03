@@ -80,7 +80,7 @@ class AccountMove(models.Model):
         company = self.company_id or self.env.company
         domain = [
             *self.env['account.journal']._check_company_domain(company),
-            ('type', 'in', journal_types), ('x_studio_branch', '=', self.env.user.x_studio_default_branch.id)
+            ('type', 'in', journal_types), '|', ('x_studio_branch' , '=', False), ('x_studio_branch', '=', self.env.user.x_studio_default_branch.id)
         ]
 
         journal = None
