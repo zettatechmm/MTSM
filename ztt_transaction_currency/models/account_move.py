@@ -50,6 +50,23 @@ class AccountMove(models.Model):
 
     currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
     x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    journal_id = fields.Many2one(
+        'account.journal',
+        string='Journal',
+        compute='_compute_journal_id', inverse='_inverse_journal_id', store=True, readonly=False, precompute=True,
+        required=True,
+        check_company=True,
+        domain="[('id', 'in', suitable_journal_ids), ('x_studio_branch', '=', x_studio_branch)]",
+    )
+    
+    def _get_journal(self, branch_id):
+        res = self.env['account.journal'].search([('type' , '=', 'sale'), ('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
+        return res
+    
+    @api.onchange('x_studio_branch')
+    def _onchange_branch(self):
+        if self.x_studio_branch and self.move_type == 'out_invoice':       
+            self.journal_id = self._get_journal(self.x_studio_branch.id).id
     
     def _search_default_journal(self):
         if self.payment_id and self.payment_id.journal_id:
