@@ -11,10 +11,13 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    
+    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
 
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
-        res.update({'currency_rate': self.currency_rate,})
+        res.update({'currency_rate': self.currency_rate,
+                    'x_studio_branch': self.x_studio_branch.id})    
         return res
 
     @api.depends('currency_id','pricelist_id')
