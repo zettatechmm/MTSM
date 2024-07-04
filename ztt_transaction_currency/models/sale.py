@@ -35,7 +35,9 @@ class SaleOrder(models.Model):
         res = super()._prepare_invoice()
         res.update({'currency_rate': self.currency_rate,
                     'x_studio_branch': self.x_studio_branch.id,
-                    'journal_id': self._get_default_journal().id})    
+                    'journal_id': self._get_default_journal().id,
+                    'x_studio_ordered_by': self.x_studio_ordered_by_1.id,
+                    'x_studio_salespersons': self.x_studio_salespersons.ids})    
         return res
 
     @api.depends('currency_id','pricelist_id')
