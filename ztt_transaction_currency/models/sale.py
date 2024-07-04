@@ -13,6 +13,19 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    warehouse_id = fields.Many2one(
+                    'stock.warehouse', string='Warehouse', required=True,
+                    compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
+                    check_company=True, domain="['|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]")
+    
+    def _get_warehouse(self, branch_id):
+        res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
+        return res
+    
+    @api.onchange('x_studio_branch')
+    def _onchange_branch(self):
+        if self.x_studio_branch:       
+            self.warehouse_id = self._get_warehouse(self.x_studio_branch.id).id
     
     def _get_default_journal(self):
         res = self.env['account.journal'].search([('type' , '=', 'sale'), ('company_id', '=', self.env.company.id), ('x_studio_branch', '=', self.x_studio_branch.id)], limit=1)
