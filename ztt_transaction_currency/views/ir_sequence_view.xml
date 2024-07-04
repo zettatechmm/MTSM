@@ -1,0 +1,16 @@
+<odoo>
+	<data>
+
+        <record id="ir_sequence_form_inherit" model="ir.ui.view">
+        <field name="name">ir_sequence_form_inherit</field>
+        <field name="model">ir.sequence</field>
+        <field name="inherit_id" ref="base.sequence_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name='branch_id' options="{'no_open': True, 'no_create': True}"/>
+            </xpath>
+        </field>
+        </record>
+
+    </data>
+</odoo>
