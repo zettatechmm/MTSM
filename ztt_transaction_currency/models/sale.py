@@ -18,6 +18,21 @@ class SaleOrder(models.Model):
                     compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
                     check_company=True, domain="['|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]")
     
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'company_id' in vals:
+                self = self.with_company(vals['company_id'])
+            if 'x_studio_branch' in vals and vals['x_studio_branch']:
+                branch = self.env['x_branches'].browse(vals['x_studio_branch'])
+                if branch:
+                    if vals.get('name', _("New")) == _("New"):
+                        seq_date = fields.Datetime.context_timestamp(
+                            self, fields.Datetime.to_datetime(vals['date_order'])
+                        ) if 'date_order' in vals else None
+                        vals['name'] = self.env['ir.sequence'].next_by_code_by_branch('sale.order.branch', sequence_date=seq_date, branch_id=branch.id) or _("New")
+        return super().create(vals_list)
+            
     def _get_warehouse(self, branch_id):
         res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
         return res
