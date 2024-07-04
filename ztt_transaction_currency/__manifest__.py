@@ -26,6 +26,7 @@
 
     "website" : "https://odoo.zettatechmm.com",
     "data": [
+        'security/ir_rules.xml',
         'views/views.xml',
     ],
     'qweb': [
