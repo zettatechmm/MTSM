@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
+    consignment_no = fields.Char(string="Consignment No")
     x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
     warehouse_id = fields.Many2one(
                     'stock.warehouse', string='Warehouse', required=True,
@@ -32,6 +33,12 @@ class SaleOrder(models.Model):
                         ) if 'date_order' in vals else None
                         vals['name'] = self.env['ir.sequence'].next_by_code_by_branch('sale.order.branch', sequence_date=seq_date, branch_id=branch.id) or _("New")
         return super().create(vals_list)
+    
+    def action_confirm(self):
+        super().action_confirm()
+        for order in self:
+            if order.x_studio_branch and 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
+                order.consignment_no = self.env['ir.sequence'].next_by_code_by_branch('so.consignment.branch', branch_id=order.x_studio_branch.id)
             
     def _get_warehouse(self, branch_id):
         res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)

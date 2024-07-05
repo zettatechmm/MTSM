@@ -20,6 +20,12 @@
                     <field name='currency_rate'/>
                     <field name='x_studio_branch' invisible="1"/>
                 </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name='consignment_no' readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="readonly">state not in ('draft', 'sent', 'cancel')</attribute>
+                </xpath>
            </field>
         </record>
 
