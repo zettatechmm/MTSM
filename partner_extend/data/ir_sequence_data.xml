@@ -1,0 +1,13 @@
+
+<odoo>
+	<data noupdate="1">
+        <!-- sequence for customer reference by branch -->
+        <record id="seq_cust_ref_branch" model="ir.sequence">
+            <field name="name">Customer Reference By Branch</field>
+            <field name="code">customer.reference.branch</field>
+            <field name="prefix"></field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
