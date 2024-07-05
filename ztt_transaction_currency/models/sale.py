@@ -32,6 +32,20 @@ class SaleOrder(models.Model):
                         ) if 'date_order' in vals else None
                         vals['name'] = self.env['ir.sequence'].next_by_code_by_branch('sale.order.branch', sequence_date=seq_date, branch_id=branch.id) or _("New")
         return super().create(vals_list)
+    
+    #add note SO to DO
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        for order in self:
+            for picking in order.picking_ids:
+                picking.note = order.note
+        return res
+    
+    # def action_confirm(self):
+    #     super().action_confirm()
+    #     for order in self:
+    #         if order.x_studio_branch and 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
+    #             order.consignment_no = self.env['ir.sequence'].next_by_code_by_branch('so.consignment.branch', branch_id=order.x_studio_branch.id)
             
     def _get_warehouse(self, branch_id):
         res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
