@@ -108,6 +108,8 @@ class SaleOrder(models.Model):
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
+    
+    branch_id = fields.Many2one("x_branches", string="Branch", related="order_id.x_studio_branch", store=True)
 
     @api.depends('invoice_lines', 'invoice_lines.price_total', 'invoice_lines.move_id.state', 'invoice_lines.move_id.move_type')
     def _compute_untaxed_amount_invoiced(self):
