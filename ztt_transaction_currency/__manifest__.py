@@ -4,7 +4,7 @@
     "name" : "ZTT Transaction Currency",
     "version" : "17.0.0.0",
     "category" : "Currency",
-    "depends" : ['base','sale','purchase','sale_renting'],
+    "depends" : ['base','sale','purchase','sale_renting', 'stock', 'sale_stock'],
     "author": "Zettatech",
     'summary': "Sale Customization",
     "description": """
@@ -30,6 +30,7 @@
         'security/ir_rules.xml',
         'views/ir_sequence_view.xml',
         'views/views.xml',
+        'report/delivery_slip_report.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
