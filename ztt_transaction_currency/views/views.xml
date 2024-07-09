@@ -15,7 +15,10 @@
             <field name="name">view_order_form_inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
+            <field name="arch" type="xml">                
+                <xpath expr="//field[@name='order_line']//tree//field[@name='analytic_distribution']" position="before">
+                    <field name="branch_id" optional="hide"/>
+                </xpath>
                 <xpath expr="//field[@name='country_code']" position="before">
                     <field name='currency_rate'/>
                     <field name='x_studio_branch' invisible="1"/>

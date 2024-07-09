@@ -16,6 +16,7 @@
         'crm',
     ],
     'data': [
+        'data/ir_sequence_data.xml',
         'security/ir.model.access.csv',
         'views/res_township_view.xml',
         'views/city_village_view.xml',
