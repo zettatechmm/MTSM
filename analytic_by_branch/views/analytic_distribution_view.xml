@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_analytic_distribution_model_tree_inherits" model="ir.ui.view">
+            <field name="name">account.analytic.distribution.model.inherits.tree</field>
+            <field name="model">account.analytic.distribution.model</field>
+            <field name="inherit_id" ref="analytic.account_analytic_distribution_model_tree_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                            <field name="branch_id" optional="show"/>
+                    </xpath>
+                    
+                </data>
+            </field>
+        </record>
+
+        <record id="account_analytic_distribution_model_form_inherits" model="ir.ui.view">
+            <field name="name">account.analytic.distribution.model.inherits.form</field>
+            <field name="model">account.analytic.distribution.model</field>
+            <field name="inherit_id" ref="analytic.account_analytic_distribution_model_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                            <field name="branch_id" optional="show"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

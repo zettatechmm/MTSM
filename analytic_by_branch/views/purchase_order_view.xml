@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_purchase_order_form_inherit_branch" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.branch</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_qty']" position="before">
+                <field name="branch_id"/>
+            </xpath>
+       </field>
+    </record>
+
+    <!-- <record id="view_purchase_order_form_inherit_branch" model="ir.ui.view">
+        <field name="name">view.purchase.order.form_.inherit.branch</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">                
+            <xpath expr="//field[@name='order_line']//tree//field[@name='analytic_distribution']" position="before">
+                <field name="branch_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record> -->
+</odoo>
