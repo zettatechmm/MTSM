@@ -1,21 +1,5 @@
 from typing import Dict, List
 from odoo import api, fields, models, SUPERUSER_ID, _
-
-# class SaleOrder(models.Model):
-#     _inherit = "sale.order"
-    
-#     @api.onchange('order_line', 'partner_id', 'partner_shipping_id')
-#     def onchange_order_line(self):
-#         super().onchange_order_line()
-#         for line in self.order_line:
-#             if line.order_id.x_studio_branch:                    
-#                     line.branch_id = self.x_studio_branch.id
-
-#     # @api.onchange('order_line','order_line.branch_id')
-#     # def _onchange_order_line(self):
-#     #     for line in self:
-#     #         if line.order_id.x_studio_branch:                    
-#     #                 line.branch_id = self.x_studio_branch.id
             
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"

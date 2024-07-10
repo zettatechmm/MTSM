@@ -13,7 +13,7 @@
             'security/ir_rules.xml',
             'views/analytic_distribution_view.xml',
             'views/sale_order_view.xml',
-            #'views/purchase_order_view.xml',
+            'views/purchase_order_view.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
