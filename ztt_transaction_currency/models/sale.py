@@ -17,6 +17,9 @@ class SaleOrder(models.Model):
                     'stock.warehouse', string='Warehouse', required=True,
                     compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
                     check_company=True, domain="['|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]")
+    partner_id = fields.Many2one(comodel_name='res.partner', string="Customer", required=True, 
+                                change_default=True, index=True, tracking=1,check_company=True, 
+                                domain="['|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]")
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -108,8 +111,6 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
-    branch_id = fields.Many2one("x_branches", string="Branch", related="order_id.x_studio_branch", store=True)
-
     @api.depends('invoice_lines', 'invoice_lines.price_total', 'invoice_lines.move_id.state', 'invoice_lines.move_id.move_type')
     def _compute_untaxed_amount_invoiced(self):
         """ Compute the untaxed amount already invoiced from the sale order line, taking the refund attached
