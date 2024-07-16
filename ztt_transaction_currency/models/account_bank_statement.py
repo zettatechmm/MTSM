@@ -80,8 +80,8 @@ class AccountBankStatementLine(models.Model):
         elif foreign_currency == company_currency:
             company_amount = transaction_amount
         else:
-            company_amount = journal_currency.with_company(currency_rate=self.currency_rate)\
-                ._convert(journal_amount, company_currency.with_context(currency_rate=1), self.journal_id.company_id, self.date)
+            company_amount = journal_currency.with_context(currency_rate=self.currency_rate)\
+                ._convert(journal_amount, company_currency, self.journal_id.company_id, self.date)
 
         liquidity_line_vals = {
             'name': self.payment_ref,
