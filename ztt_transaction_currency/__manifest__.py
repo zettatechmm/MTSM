@@ -35,6 +35,7 @@
     'qweb': [
         # 'static/src/xml/template.xml',
     ],
+    'license': "LGPL-3",
     "auto_install": False,
     "installable": True,
     # 'assets': {
