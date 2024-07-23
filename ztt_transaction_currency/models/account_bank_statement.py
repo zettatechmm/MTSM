@@ -100,8 +100,7 @@ class AccountBankStatementLine(models.Model):
             'currency_id': journal_currency.id,
             'amount_currency': journal_amount,
             'debit': company_amount > 0 and company_amount or 0.0,
-            'credit': company_amount < 0 and -company_amount or 0.0,
-            'analytic_distribution': analytic_distribution
+            'credit': company_amount < 0 and -company_amount or 0.0,           
         }
 
         # Create the counterpart line values.
@@ -114,5 +113,6 @@ class AccountBankStatementLine(models.Model):
             'amount_currency': -transaction_amount,
             'debit': -company_amount if company_amount < 0.0 else 0.0,
             'credit': company_amount if company_amount > 0.0 else 0.0,
+            'analytic_distribution': analytic_distribution
         }
         return [liquidity_line_vals, counterpart_line_vals]
