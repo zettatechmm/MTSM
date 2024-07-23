@@ -49,6 +49,9 @@
                 <xpath expr="//field[@name='foreign_currency_id']" position="after">
                     <field name='currency_rate' groups="base.group_multi_currency" invisible="not foreign_currency_id" />
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name='branch_id'/>
+                </xpath>
            </field>
         </record>
 
