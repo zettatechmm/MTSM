@@ -35,7 +35,6 @@ class AccountBankStatementLine(models.Model):
                 rec.statement_id.currency_rate = rec.currency_rate
 
     currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
-    branch_id = fields.Many2one("x_branches", string="Branch", related="partner_id.x_studio_branch", readonly=False)
 
     @api.depends('foreign_currency_id', 'date', 'amount', 'company_id','currency_rate')
     def _compute_amount_currency(self):
@@ -83,15 +82,7 @@ class AccountBankStatementLine(models.Model):
         else:
             company_amount = journal_currency.with_context(currency_rate=self.currency_rate)\
                 ._convert(journal_amount, company_currency, self.journal_id.company_id, self.date)
-        
-        self.move_id.x_studio_branch = self.branch_id.id
-        distribution = self.env['account.analytic.distribution.model']._get_distribution({
-                    "partner_id": self.partner_id.id,
-                    "partner_category_id": self.partner_id.category_id.ids,
-                    "company_id": self.company_id.id,
-                    "branch_id": self.branch_id.id
-                    })
-        analytic_distribution = distribution or False
+                
         liquidity_line_vals = {
             'name': self.payment_ref,
             'move_id': self.move_id.id,
@@ -114,6 +105,5 @@ class AccountBankStatementLine(models.Model):
             'amount_currency': -transaction_amount,
             'debit': -company_amount if company_amount < 0.0 else 0.0,
             'credit': company_amount if company_amount > 0.0 else 0.0,
-            'analytic_distribution': analytic_distribution
         }
         return [liquidity_line_vals, counterpart_line_vals]
