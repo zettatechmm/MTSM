@@ -92,7 +92,6 @@ class AccountBankStatementLine(models.Model):
             'amount_currency': journal_amount,
             'debit': company_amount > 0 and company_amount or 0.0,
             'credit': company_amount < 0 and -company_amount or 0.0,       
-            'analytic_distribution': analytic_distribution    
         }
 
         # Create the counterpart line values.
