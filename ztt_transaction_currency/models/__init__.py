@@ -5,3 +5,4 @@ from . import purchase,res_currency,sale,account_move,product,account_payment, a
 from . import res_users
 #from . import ir_sequence
 #from . import bank_rec_widget_line
+from . import stock_picking

@@ -27,6 +27,7 @@
     "website" : "https://odoo.zettatechmm.com",
     "data": [
         'views/views.xml',
+        'views/banck_st_line_view.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',

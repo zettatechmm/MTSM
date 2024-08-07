@@ -43,7 +43,7 @@ class AccountBankStatementLine(models.Model):
                 st_line.amount_currency = False
             elif st_line.date:
                 # only convert if it hasn't been set already
-                st_line.amount_currency = st_line.currency_id.with_context(currency_rate=st_line.currency_id.rate)._convert(
+                st_line.amount_currency = st_line.currency_id._convert(
                     from_amount=st_line.amount,
                     to_currency=st_line.foreign_currency_id.with_context(currency_rate=st_line.currency_rate),
                     company=st_line.company_id,

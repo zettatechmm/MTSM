@@ -343,17 +343,17 @@ class AccountMoveLine(models.Model):
                 product_uom=line.product_uom_id,
             )
 
-    @api.depends('currency_id', 'company_id', 'move_id.date')
-    def _compute_currency_rate(self):
-        for line in self:
-            if line.currency_id:
-                # line.currency_rate = line.move_id.currency_rate
-                # line.currency_rate = self.env['res.currency']._get_conversion_rate(
-                #     from_currency=line.company_currency_id,
-                #     to_currency=line.currency_id,
-                #     company=line.company_id,
-                #     date=line.move_id.invoice_date or line.move_id.date or fields.Date.context_today(line),
-                # )
-                line.currency_rate = 1/line.move_id.currency_rate
-            else:
-                line.currency_rate = 1
+    # @api.depends('currency_id', 'company_id', 'move_id.date')
+    # def _compute_currency_rate(self):
+    #     for line in self:
+    #         if line.currency_id:
+    #             # line.currency_rate = line.move_id.currency_rate
+    #             # line.currency_rate = self.env['res.currency']._get_conversion_rate(
+    #             #     from_currency=line.company_currency_id,
+    #             #     to_currency=line.currency_id,
+    #             #     company=line.company_id,
+    #             #     date=line.move_id.invoice_date or line.move_id.date or fields.Date.context_today(line),
+    #             # )
+    #             line.currency_rate = 1/line.move_id.currency_rate
+    #         else:
+    #             line.currency_rate = 1
