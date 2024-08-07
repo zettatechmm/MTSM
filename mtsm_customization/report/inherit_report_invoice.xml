@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<odoo>
+    
+    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document" > 
+        <!-- customer informations -->
+        <xpath expr="//div[@class='row']" position="replace">
+            <div class="row" style="margin-top: -50px;">  
+                <div class="col-7"></div> 
+                <div class="col-5">
+                    <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
+                        <div class="col-12">
+                            <t t-set="information_block">
+                                <div groups="account.group_delivery_invoice_address" name="shipping_address_block">
+                                    <strong>Shipping Address:</strong>                                
+                                    <div class="fs-4" name="customer_information" >
+                                        <span t-field="o.partner_id.name"/><br/>
+                                        <t t-if="o.partner_id.street">
+                                            <span t-field="o.partner_id.street"/>
+                                        </t>
+                                        <t t-if="o.partner_id.street2">
+                                            <span t-field="o.partner_id.street2"/><br/> 
+                                        </t>            
+                                        <t t-if="o.partner_id.city">
+                                            <span t-field="o.partner_id.city"/>,
+                                        </t>     
+                                        <span t-field="o.partner_id.state_id.name"/><br/>          
+                                        <span t-field="o.partner_id.phone"/> 
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="col-12" name="address_not_same_as_shipping">
+                            <t >                            
+                                <div class="fs-4" name="customer_information" >
+                                    <strong>Customer Address:</strong> <br/>
+                                    <span t-field="o.partner_id.name"/><br/>
+                                    <t t-if="o.partner_id.street">
+                                        <span t-field="o.partner_id.street"/>
+                                    </t>
+                                    <t t-if="o.partner_id.street2">
+                                        <span t-field="o.partner_id.street2"/><br/> 
+                                    </t>            
+                                    <t t-if="o.partner_id.city">
+                                        <span t-field="o.partner_id.city"/>,
+                                    </t>     
+                                    <span t-field="o.partner_id.state_id.name"/><br/>          
+                                    <span t-field="o.partner_id.phone"/> 
+                                </div>
+                                <div t-if="o.partner_id.vat" id="partner_vat_address_not_same_as_shipping">
+                                    <t t-if="o.company_id.account_fiscal_country_id.vat_label" t-out="o.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
+                                    <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-elif="o.partner_shipping_id and (o.partner_shipping_id == o.partner_id)">
+                        <div class="offset-col-12 col-12" name="address_same_as_shipping">
+                            <t >                            
+                                <div class="fs-4" name="customer_information" >
+                                    <strong>Customer Address:</strong> <br/>
+                                    <span t-field="o.partner_id.name"/><br/>
+                                    <t t-if="o.partner_id.street">
+                                        <span t-field="o.partner_id.street"/>
+                                    </t>
+                                    <t t-if="o.partner_id.street2">
+                                        <span t-field="o.partner_id.street2"/><br/> 
+                                    </t>            
+                                    <t t-if="o.partner_id.city">
+                                        <span t-field="o.partner_id.city"/>,
+                                    </t>     
+                                    <span t-field="o.partner_id.state_id.name"/><br/>          
+                                    <span t-field="o.partner_id.phone"/> 
+                                </div>
+                                <div t-if="o.partner_id.vat" id="partner_vat_address_same_as_shipping">
+                                    <t t-if="o.company_id.account_fiscal_country_id.vat_label" t-out="o.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
+                                    <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="offset-col-12 col-12" name="no_shipping">
+                            <t >                            
+                                <div class="fs-4" name="customer_information" >
+                                    <strong>Customer Address:</strong> <br/>
+                                    <span t-field="o.partner_id.name"/><br/>
+                                    <t t-if="o.partner_id.street">
+                                        <span t-field="o.partner_id.street"/>
+                                    </t>
+                                    <t t-if="o.partner_id.street2">
+                                        <span t-field="o.partner_id.street2"/><br/> 
+                                    </t>            
+                                    <t t-if="o.partner_id.city">
+                                        <span t-field="o.partner_id.city"/>,
+                                    </t>     
+                                    <span t-field="o.partner_id.state_id.name"/><br/>          
+                                    <span t-field="o.partner_id.phone"/> 
+                                </div>
+                                <div t-if="o.partner_id.vat" id="partner_vat_no_shipping">
+                                    <t t-if="o.company_id.account_fiscal_country_id.vat_label" t-out="o.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
+                                    <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>  
+                </div>           
+            </div>
+        </xpath>  
+
+        <!-- space header -->
+        <xpath expr="//div[@class='mt-5 clearfix']" position="attributes">
+            <attribute name="class">m2-1 clearfix</attribute>
+        </xpath>
+
+        <!-- replace Customer Code with Ordered By -->
+        <xpath expr="//div[@id='informations']//div[@name='customer_code']" position="replace">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id" name="ordered_by">
+                <strong>Ordered By</strong><br/>
+                <span t-field="o.partner_id.complete_name"/>
+            </div>
+        </xpath>
+
+        <!-- add Item (Header / Line)-->
+        <xpath expr="//table[@name='invoice_line_table']//th[@name='th_description']" position="before">        
+            <th name="th_item" class="text-start"><span>Item</span></th>    
+        </xpath>       
+        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="before">            
+            <td name="td_item" t-attf-class="{{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                <span class="text-nowrap" t-field="line.product_id.name"/>
+            </td>
+        </xpath>
+
+        <!-- remove Taxes (Header / Line)-->
+        <xpath expr="//table[@name='invoice_line_table']//th[@name='th_taxes']" position="replace">            
+        </xpath>        
+        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='td_taxes']" position="replace">            
+        </xpath>
+
+        <!-- remove Payment Communication -->
+        <xpath expr="//p[@name='payment_communication']" position="replace">                              
+        </xpath>
+
+        <!-- signature -->
+        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="before">                
+            <div class="row" name="signature">
+                <div class="col-4 ms-4" >
+                            <div class="text-center 
+                            border border-dark 
+                            border-start-0 border-bottom-0 
+                            border-end-0 
+                            py-2 " style="width: 225px">Approved By</div>
+                </div>
+
+                <div class="col-4" >
+                    <div class="text-center 
+                    border border-dark 
+                    border-start-0 border-bottom-0 
+                    border-end-0 
+                    py-2 " style="width: 225px">Delivered By</div>
+                </div>
+
+                <div class="col-4" >
+                    <div class="text-center 
+                    border border-dark 
+                    border-start-0 border-bottom-0 
+                    border-end-0 
+                    py-2 " style="width: 225px">Qty Checked / Received By</div>
+                </div>
+
+                
+            </div>
+        </xpath>
+  
+
+    </template>   
+    
+    
+    
+
+</odoo>

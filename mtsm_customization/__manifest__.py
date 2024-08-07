@@ -15,6 +15,7 @@
         'views/ir_sequence_view.xml',
         'views/views.xml',
         'report/delivery_slip_report.xml',
+        'report/inherit_report_invoice.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
