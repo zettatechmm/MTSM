@@ -114,9 +114,9 @@
 
         <!-- replace Customer Code with Ordered By -->
         <xpath expr="//div[@id='informations']//div[@name='customer_code']" position="replace">
-            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id.ref" name="customer_code">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.x_studio_ordered_by" name="customer_code">
                 <strong>Ordered By:</strong><br/>
-                <span t-field="o.x_studio_salespersons"/>
+                <span t-field="o.x_studio_ordered_by"/>
             </div>
         </xpath>
 
