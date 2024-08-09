@@ -109,14 +109,14 @@
 
         <!-- space header -->
         <xpath expr="//div[@class='mt-5 clearfix']" position="attributes">
-            <attribute name="class">m2-1 clearfix</attribute>
+            <attribute name="class">mt-1 clearfix</attribute>
         </xpath>
 
         <!-- replace Customer Code with Ordered By -->
         <xpath expr="//div[@id='informations']//div[@name='customer_code']" position="replace">
-            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id" name="ordered_by">
-                <strong>Ordered By</strong><br/>
-                <span t-field="o.partner_id.complete_name"/>
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id.ref" name="customer_code">
+                <strong>Ordered By:</strong><br/>
+                <span t-field="o.x_studio_salespersons"/>
             </div>
         </xpath>
 
@@ -128,6 +128,19 @@
             <td name="td_item" t-attf-class="{{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                 <span class="text-nowrap" t-field="line.product_id.name"/>
             </td>
+        </xpath>
+
+        <!-- add description -->
+        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="replace">            
+            <td name="description_sale">
+                <span t-if="line.product_id.description_sale" t-field="line.product_id.description_sale" t-options="{'widget': 'text'}">Bacon Burger</span>
+                <span t-else="line.name" t-field="line.name" t-options="{'widget': 'text'}"></span>
+            </td>
+        </xpath>
+
+        <!-- unit price two decimal place -->
+        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//span[@t-field='line.price_unit']" position="attributes">            
+            <attribute name="t-options">{'widget': 'float', 'precision': 2}</attribute>
         </xpath>
 
         <!-- remove Taxes (Header / Line)-->
