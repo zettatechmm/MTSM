@@ -24,17 +24,20 @@ class AccountBankStatement(models.Model):
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
-    @api.depends('foreign_currency_id')
-    def compute_currency_rate(self):
-        for rec in self:
-            if rec.foreign_currency_id.id!=rec.currency_id.id:
-                rec.currency_rate = rec.foreign_currency_id.rate
-                rec.statement_id.currency_rate = rec.currency_rate
+    @api.depends('foreign_currency_id', 'company_id', 'date')
+    def _compute_currency_rate(self):
+        for line in self:
+            if line.foreign_currency_id:
+                line.currency_rate = self.env['res.currency']._get_conversion_rate(
+                    from_currency=line.currency_id,
+                    to_currency=line.foreign_currency_id,
+                    company=line.company_id,
+                    date=line.date,
+                )
             else:
-                rec.currency_rate = 1
-                rec.statement_id.currency_rate = rec.currency_rate
+                line.currency_rate = 1
 
-    currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
+    currency_rate = fields.Float('Currency Rate',default=1, compute='compute_currency_rate',store=True,readonly=False)
 
     @api.depends('foreign_currency_id', 'date', 'amount', 'company_id','currency_rate')
     def _compute_amount_currency(self):
@@ -49,6 +52,20 @@ class AccountBankStatementLine(models.Model):
                     company=st_line.company_id,
                     date=st_line.date,
                 )
+    
+    # @api.depends('foreign_currency_id', 'date', 'amount', 'company_id', 'currency_rate')
+    # def _compute_amount_currency(self):
+    #     for st_line in self:
+    #         if not st_line.foreign_currency_id:
+    #             st_line.amount_currency = False
+    #         elif st_line.date and not st_line.amount_currency:
+    #             # only convert if it hasn't been set already
+    #             st_line.amount_currency = st_line.currency_id._convert(
+    #                 from_amount=st_line.amount,
+    #                 to_currency=st_line.foreign_currency_id,
+    #                 company=st_line.company_id,
+    #                 date=st_line.date,
+    #             )
 
     def _prepare_move_line_default_vals(self, counterpart_account_id=None):
         """ Prepare the dictionary to create the default account.move.lines for the current account.bank.statement.line
@@ -81,7 +98,7 @@ class AccountBankStatementLine(models.Model):
             company_amount = transaction_amount
         else:
             company_amount = journal_currency.with_context(currency_rate=self.currency_rate)\
-                ._convert(journal_amount, company_currency, self.journal_id.company_id, self.date)
+                ._convert(journal_amount, company_currency.with_context(currency_rate=company_currency.rate), self.journal_id.company_id, self.date)
                 
         liquidity_line_vals = {
             'name': self.payment_ref,

@@ -26,13 +26,13 @@ class SaleOrder(models.Model):
         res.update({'currency_rate': self.currency_rate})    
         return res
     
-    #add currency_rate SO to DO
-    def action_confirm(self):
-        res = super(SaleOrder, self).action_confirm()
-        for order in self:
-            for picking in order.picking_ids:
-                picking.currency_rate = order.currency_rate
-        return res
+    # #add currency_rate SO to DO
+    # def action_confirm(self):
+    #     res = super(SaleOrder, self).action_confirm()
+    #     for order in self:
+    #         for picking in order.picking_ids:
+    #             picking.currency_rate = order.currency_rate
+    #     return res
 
     @api.depends('invoice_ids.state', 'currency_id', 'amount_total','currency_rate')
     def _compute_amount_to_invoice(self):
