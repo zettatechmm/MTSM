@@ -32,7 +32,6 @@
                         <div class="col-12" name="address_not_same_as_shipping">
                             <t >                            
                                 <div class="fs-4" name="customer_information" >
-                                    <strong>Customer Address:</strong> <br/>
                                     <span t-field="o.partner_id.name"/><br/>
                                     <t t-if="o.partner_id.street">
                                         <span t-field="o.partner_id.street"/>
@@ -57,7 +56,6 @@
                         <div class="offset-col-12 col-12" name="address_same_as_shipping">
                             <t >                            
                                 <div class="fs-4" name="customer_information" >
-                                    <strong>Customer Address:</strong> <br/>
                                     <span t-field="o.partner_id.name"/><br/>
                                     <t t-if="o.partner_id.street">
                                         <span t-field="o.partner_id.street"/>
@@ -82,7 +80,6 @@
                         <div class="offset-col-12 col-12" name="no_shipping">
                             <t >                            
                                 <div class="fs-4" name="customer_information" >
-                                    <strong>Customer Address:</strong> <br/>
                                     <span t-field="o.partner_id.name"/><br/>
                                     <t t-if="o.partner_id.street">
                                         <span t-field="o.partner_id.street"/>
@@ -109,12 +106,12 @@
 
         <!-- space header -->
         <xpath expr="//div[@class='mt-5 clearfix']" position="attributes">
-            <attribute name="class">mt-1 clearfix</attribute>
+            <attribute name="class">mt-2 clearfix</attribute>
         </xpath>
 
         <!-- replace Customer Code with Ordered By -->
         <xpath expr="//div[@id='informations']//div[@name='customer_code']" position="replace">
-            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.x_studio_ordered_by" name="customer_code">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id.ref" name="x_studio_ordered_by">
                 <strong>Ordered By:</strong><br/>
                 <span t-field="o.x_studio_ordered_by"/>
             </div>
@@ -150,11 +147,20 @@
         </xpath>
 
         <!-- remove Payment Communication -->
-        <xpath expr="//p[@name='payment_communication']" position="replace">                              
+        <xpath expr="//div[@id='payment_term']//div[3]" position="replace">                              
         </xpath>
 
-        <!-- signature -->
-        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="before">                
+        <!-- remove original note -->
+        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="replace">            
+        </xpath> 
+
+        <!-- note and signature -->
+        <xpath expr="//div[@id='payment_term']//div[2]" position="after">
+            <div class="text-muted m-3" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if o.company_id.terms_type != 'html' else ''}" t-if="not is_html_empty(o.narration)" name="comment">
+                <span t-field="o.narration"/>
+            </div>
+
+            <div class="row" style="height: 120px"></div>                
             <div class="row" name="signature">
                 <div class="col-4 ms-4" >
                             <div class="text-center 
@@ -178,16 +184,8 @@
                     border-start-0 border-bottom-0 
                     border-end-0 
                     py-2 " style="width: 225px">Qty Checked / Received By</div>
-                </div>
-
-                
+                </div>                
             </div>
-        </xpath>
-  
-
-    </template>   
-    
-    
-    
-
+        </xpath>     
+    </template>       
 </odoo>
