@@ -21,7 +21,11 @@ class PurchaseOrder(models.Model):
                 rec.currency_rate = 1
 
     currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    
+    def _prepare_invoice(self):
+        res = super()._prepare_invoice()
+        res.update({'currency_rate': self.currency_rate})    
+        return res
 
     def _add_supplier_to_product(self):
         # Add the partner in the supplier list of the product if the supplier is not registered for
@@ -127,21 +131,23 @@ class PurchaseOrderLine(models.Model):
                 line.name = line._get_product_purchase_description(line.product_id.with_context(product_ctx))
 
     def _prepare_account_move_line(self, move=False):
-        self.ensure_one()
-        aml_currency = move and move.currency_id or self.currency_id
-        date = move and move.date or fields.Date.today()
-        res = {
-            'display_type': self.display_type or 'product',
-            'name': '%s: %s' % (self.order_id.name, self.name),
-            'product_id': self.product_id.id,
-            'product_uom_id': self.product_uom.id,
-            'quantity': self.qty_to_invoice,
-            'discount': self.discount,
-            #'price_unit': self.currency_id._convert(self.price_unit, aml_currency, self.company_id, date, round=False),
-            'price_unit': self.currency_id.with_context(currency_rate=self.order_id.currency_rate)._convert(self.price_unit, aml_currency.with_context(currency_rate=move and move.currency_rate or self.order_id.currency_rate), self.company_id, date, round=False),
-            'tax_ids': [(6, 0, self.taxes_id.ids)],
-            'purchase_line_id': self.id,
-        }
+        res = super()._prepare_account_move_line()
+        #unneccessary code
+        # self.ensure_one()
+        # aml_currency = move and move.currency_id or self.currency_id
+        # date = move and move.date or fields.Date.today()
+        # res = {
+        #     'display_type': self.display_type or 'product',
+        #     'name': '%s: %s' % (self.order_id.name, self.name),
+        #     'product_id': self.product_id.id,
+        #     'product_uom_id': self.product_uom.id,
+        #     'quantity': self.qty_to_invoice,
+        #     'discount': self.discount,
+        #     #'price_unit': self.currency_id._convert(self.price_unit, aml_currency, self.company_id, date, round=False),
+        #     'price_unit': self.currency_id.with_context(currency_rate=self.order_id.currency_rate)._convert(self.price_unit, aml_currency.with_context(currency_rate=move and move.currency_rate or self.order_id.currency_rate), self.company_id, date, round=False),
+        #     'tax_ids': [(6, 0, self.taxes_id.ids)],
+        #     'purchase_line_id': self.id,
+        # }
         if self.analytic_distribution and not self.display_type:
             res['analytic_distribution'] = self.analytic_distribution
         return res

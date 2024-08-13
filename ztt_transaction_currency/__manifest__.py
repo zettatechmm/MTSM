@@ -4,7 +4,7 @@
     "name" : "ZTT Transaction Currency",
     "version" : "17.0.0.0",
     "category" : "Currency",
-    "depends" : ['base','sale','purchase','sale_renting', 'stock', 'sale_stock'],
+    "depends" : ['base','sale','purchase','sale_renting', 'account', 'stock', 'sale_stock', 'stock_account', 'purchase_stock', 'mtsm_customization'],
     "author": "Zettatech",
     'summary': "Sale Customization",
     "description": """
@@ -27,6 +27,7 @@
     "website" : "https://odoo.zettatechmm.com",
     "data": [
         'views/views.xml',
+        'views/banck_st_line_view.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
