@@ -4,7 +4,7 @@
     "name" : "Analytic By Branch",
     "version" : "17.0.0.0",
     "category" : "Analytic By Branch",
-    "depends" : ['base','sale','purchase', 'account', 'analytic', 'ztt_transaction_currency', 'mtsm_customization'],
+    "depends" : ['base','sale','purchase', 'account', 'analytic', 'mtsm_customization'],
     "author": "Zettatech",
     'summary': "add branch according to analytic distribution",
     "description": """ """,

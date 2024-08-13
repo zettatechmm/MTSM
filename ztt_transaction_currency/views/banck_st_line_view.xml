@@ -6,8 +6,11 @@
             <field name="model">account.bank.statement.line</field>
             <field name="inherit_id" ref="account_accountant.view_bank_statement_line_form_bank_rec_widget"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='foreign_currency_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='foreign_currency_id']" position="after">
-                    <field name='currency_rate'/>
+                    <field name="currency_rate" invisible="currency_rate == 0"/>
                 </xpath>
            </field>
         </record>

@@ -24,4 +24,5 @@
     # only loaded in demonstration mode
     'demo': [
     ],
+    'license': "LGPL-3",
 }

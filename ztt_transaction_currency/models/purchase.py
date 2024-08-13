@@ -21,7 +21,6 @@ class PurchaseOrder(models.Model):
                 rec.currency_rate = 1
 
     currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
     
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
