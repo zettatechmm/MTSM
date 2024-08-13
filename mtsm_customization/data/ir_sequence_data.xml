@@ -1,0 +1,22 @@
+
+<odoo>
+	<data noupdate="1">
+        <!-- sequence for sale order by branch -->
+        <record id="seq_sale_order_branch" model="ir.sequence">
+            <field name="name">Sale Order By Branch</field>
+            <field name="code">sale.order.branch</field>
+            <field name="prefix"></field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- sequence for sale order consignment no -->
+        <!-- <record id="seq_consignment_branch" model="ir.sequence">
+            <field name="name">Consignment No By Branch</field>
+            <field name="code">so.consignment.branch</field>
+            <field name="prefix"></field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record> -->
+    </data>
+</odoo>

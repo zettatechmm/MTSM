@@ -1,0 +1,33 @@
+<odoo>
+	<data>
+
+        <record id="view_order_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view_order_form_inherit_branch</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">                
+                <xpath expr="//field[@name='country_code']" position="before">
+                    <field name='x_studio_branch' invisible="1"/>
+                </xpath>
+                <!-- <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name='consignment_no' readonly="1"/>
+                </xpath> -->
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="readonly">state not in ('draft', 'sent', 'cancel')</attribute>
+                </xpath>
+           </field>
+        </record>
+
+        <record id="view_move_form_inherit_branch" model="ir.ui.view">
+            <field name="name">view_move_form_inherit_branch</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@id='header_right_group']/field[@name='currency_id']" position="after">
+                    <field name='x_studio_branch' invisible="1"/>
+                </xpath>
+           </field>
+        </record>
+        
+	</data>
+</odoo>
