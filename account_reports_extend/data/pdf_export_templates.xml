@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <template id="pdf_export_filters_custom_filter" inherit_id="account_reports.pdf_export_filters" primary="True">
+    <xpath expr="//div[hasclass('row')][last()]" position="after">
+        <!-- Partners Township -->
+        <t t-if="options.get('partner_townships') != None">
+            <div class="row">
+                <t t-set="partner_township_value" t-value="[partner for partner in options['selected_partner_townships']]"/>
+                <t t-if="partner_township_value">
+                    <div class="col-3">Partners Townships:</div>
+                    <div class="col-9 o_text_muted" t-out="', '.join(partner_township_value)"/>
+                </t>
+            </div>
+        </t>
+
+    </xpath>
+        
+    </template>
+</odoo>

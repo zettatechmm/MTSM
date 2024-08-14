@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="account_reports_extend.AccountReportFilterPartner" t-inherit="account_reports.AccountReportFilterPartner" t-inherit-mode="extension">
+        <xpath expr="//Dropdown/div[2]" position="after">
+            <div class="dropdown-item">
+                <label>Branches</label>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('x_branches', 'partner_branches')"/>
+            </div>
+            <div class="dropdown-item">
+                <label>Townships</label>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('res.township', 'partner_townships')"/>
+            </div>
+            <div class="dropdown-item">
+                <label>States</label>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('res.country.state', 'partner_states')"/>
+            </div>
+        </xpath>
+    </t>
+</templates>
