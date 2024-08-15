@@ -409,6 +409,6 @@ class AccountMoveLine(models.Model):
                 #     company=line.company_id,
                 #     date=line.move_id.invoice_date or line.move_id.date or fields.Date.context_today(line),
                 # )
-                line.currency_rate = 1/line.move_id.currency_rate
+                line.currency_rate = 1/line.move_id.currency_rate if line.move_id.currency_rate else 1
             else:
                 line.currency_rate = 1
