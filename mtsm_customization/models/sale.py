@@ -3,7 +3,7 @@ from odoo import api, Command, fields, models, _
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    consignment_no = fields.Char(string="Consignment No")
+    consignment_no = fields.Char(string="Consignment No", copy=False)
     x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
     warehouse_id = fields.Many2one(
                     'stock.warehouse', string='Warehouse', required=True,
@@ -42,6 +42,15 @@ class SaleOrder(models.Model):
     #     for order in self:
     #         if order.x_studio_branch and 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
     #             order.consignment_no = self.env['ir.sequence'].next_by_code_by_branch('so.consignment.branch', branch_id=order.x_studio_branch.id)
+
+    def action_confirm(self):
+        super().action_confirm()
+        for order in self:
+            if 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
+                order.consignment_no = self.env['ir.sequence'].next_by_code('so.consi.sequence')
+            else:
+                order.consignment_no = False
+
             
     def _get_warehouse(self, branch_id):
         res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
@@ -57,10 +66,13 @@ class SaleOrder(models.Model):
         return res
     
     def _prepare_invoice(self):
-        res = super()._prepare_invoice()
+        res = super()._prepare_invoice() 
         res.update({
                     'x_studio_branch': self.x_studio_branch.id,
                     'journal_id': self._get_default_journal().id,
                     'x_studio_ordered_by': self.x_studio_ordered_by_1.id,
-                    'x_studio_salespersons': self.x_studio_salespersons.ids})    
-        return res
+                    'x_studio_salespersons': self.x_studio_salespersons.ids,
+                    'consignment_no': self.consignment_no})
+        return res   
+    
+    

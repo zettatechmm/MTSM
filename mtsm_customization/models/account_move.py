@@ -1,7 +1,7 @@
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-class AccountBankStatementLine(models.Model):
+class AccountBankStatementLine(models.Model): 
     _inherit = "account.move"
         
     x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
@@ -13,6 +13,8 @@ class AccountBankStatementLine(models.Model):
         check_company=True,
         domain="[('id', 'in', suitable_journal_ids), '|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]",
     )
+
+    consignment_no = fields.Char(string="Consignment No", copy=False)
     
     def _get_journal(self, branch_id):
         res = self.env['account.journal'].search([('type' , '=', 'sale'), ('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)

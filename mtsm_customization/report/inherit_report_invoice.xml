@@ -100,6 +100,11 @@
                             </t>
                         </div>
                     </t>  
+                    <div t-if="o.consignment_no" class="row mt-1">
+                        <strong style="font-size: 16.5px">
+                            Consignment Number: <t t-out="o.consignment_no"/>
+                        </strong>                        
+                    </div>
                 </div>           
             </div>
         </xpath>  
@@ -111,7 +116,7 @@
 
         <!-- replace Customer Code with Ordered By -->
         <xpath expr="//div[@id='informations']//div[@name='customer_code']" position="replace">
-            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.partner_id.ref" name="x_studio_ordered_by">
+            <div t-attf-class="#{'col-auto col-3 mw-100' if report_type != 'html' else 'col'} mb-2" t-if="o.x_studio_ordered_by" name="x_studio_ordered_by">
                 <strong>Ordered By:</strong><br/>
                 <span t-field="o.x_studio_ordered_by"/>
             </div>
@@ -150,13 +155,15 @@
         <xpath expr="//div[@id='payment_term']//div[3]" position="replace">                              
         </xpath>
 
-        <!-- remove original note -->
-        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="replace">            
-        </xpath> 
-
         <!-- note and signature -->
-        <xpath expr="//div[@id='payment_term']//div[2]" position="after">
-            <div class="text-muted m-3" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if o.company_id.terms_type != 'html' else ''}" t-if="not is_html_empty(o.narration)" name="comment">
+        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="replace"> 
+            <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id">
+                Payment Term: <span id="payment_terms_note_id"                
+                t-field="o.invoice_payment_term_id"
+                name="payment_term">Payment within 30 calendar day</span><br/>
+            </div>
+
+            <div class="text-muted" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if o.company_id.terms_type != 'html' else ''}" t-if="not is_html_empty(o.narration)" name="comment">
                 <span t-field="o.narration"/>
             </div>
 
@@ -185,7 +192,11 @@
                     border-end-0 
                     py-2 " style="width: 225px">Qty Checked / Received By</div>
                 </div>                
-            </div>
+            </div>           
+        </xpath> 
+
+        
+        <xpath expr="//div[@id='payment_term']//span[@id='payment_terms_note_id']" position="replace">            
         </xpath>     
     </template>       
 </odoo>
