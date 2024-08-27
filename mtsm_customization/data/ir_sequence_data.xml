@@ -18,5 +18,14 @@
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
         </record> -->
+
+        <!-- sequence for sale order consignment no -->
+        <record id="seq_consi_no" model="ir.sequence">
+            <field name="name">Consignment Number</field>
+            <field name="code">so.consi.sequence</field>
+            <field name="padding">5</field>
+            <field name="prefix">CONS/%(year)s/</field>
+            <field name="company_id" eval="False"></field>
+        </record> 
     </data>
 </odoo>

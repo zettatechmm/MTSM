@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<odoo>
+    
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document" > 
+        <!-- address -->
+        <xpath expr="//t//t[3]" position="replace">
+            <div class="row" style="margin-top: -50px">
+                <div class="col-7"></div>
+                <div class="col-5">                    
+                    <div class="fs-4" name="customer_information" >
+                        <span t-field="doc.partner_id.name"/><br/>
+                        <t t-if="doc.partner_id.street">
+                            <span t-field="doc.partner_id.street"/>
+                        </t>
+                        <t t-if="doc.partner_id.street2">
+                            <span t-field="doc.partner_id.street2"/><br/> 
+                        </t>            
+                        <t t-if="doc.partner_id.city">
+                            <span t-field="doc.partner_id.city"/>,
+                        </t>     
+                        <span t-field="doc.partner_id.state_id.name"/><br/>          
+                        <span t-field="doc.partner_id.phone"/> 
+                    </div>
+                    <p t-if="doc.partner_id.vat">
+                        <t t-if="doc.company_id.account_fiscal_country_id.vat_label" t-out="doc.company_id.account_fiscal_country_id.vat_label"/>
+                        <t t-else="">Tax ID</t>: <span t-field="doc.partner_id.vat"/>
+                    </p>
+                    <div t-if="doc.consignment_no" class="row mt-1">
+                        <strong style="font-size: 16.5px">
+                            Consignment Number: <t t-out="doc.consignment_no"/>
+                        </strong>                        
+                    </div>
+                </div>                
+            </div>
+        </xpath>
+
+        <!-- Ordered By -->
+        <xpath expr="//div[@id='informations']//div[@t-if='doc.user_id.name']" position="replace">
+            <div t-if="doc.x_studio_ordered_by_1" class="col-auto col-3 mw-100 mb-2">
+                <strong>Ordered By:</strong><br/>
+                <span class="m-0" t-field="doc.x_studio_ordered_by_1">Mitchell Admin</span>
+            </div>
+        </xpath>
+
+        <!-- add Item (Header / Line)-->
+        <xpath expr="//table[hasclass('table','table-sm','o_main_table','table-borderless','mt-4')]//th[@name='th_description']" position="before">        
+            <th name="th_item" class="text-start"><span>Item</span></th>    
+        </xpath>       
+        <xpath expr="//table[hasclass('table','table-sm','o_main_table','table-borderless','mt-4')]//td[@name='td_name']" position="before">            
+            <td name="td_item"><span t-field="line.product_id.name">Bacon Burger</span></td>
+        </xpath>
+
+        <!-- Description -->
+        <xpath expr="//table[hasclass('table','table-sm','o_main_table','table-borderless','mt-4')]//td[@name='td_name']" position="replace">            
+            <td name="description_sale">
+                <span t-if="line.product_id.description_sale" t-field="line.product_id.description_sale" t-options="{'widget': 'text'}">Bacon Burger</span>
+                <span t-else="line.name" t-field="line.name" t-options="{'widget': 'text'}"></span>
+            </td>
+        </xpath>
+
+        <!-- signature -->
+        <xpath expr="//div[@class='page']" position="inside">    
+            
+            <div class="row" style="height: 120px"></div>                
+            <div class="row" name="signature">
+                <div class="col-4 ms-4" >
+                            <div class="text-center 
+                            border border-dark 
+                            border-start-0 border-bottom-0 
+                            border-end-0 
+                            py-2 " style="width: 225px">Approved By</div>
+                </div>
+
+                <div class="col-4" >
+                    <div class="text-center 
+                    border border-dark 
+                    border-start-0 border-bottom-0 
+                    border-end-0 
+                    py-2 " style="width: 225px">Delivered By</div>
+                </div>
+
+                <div class="col-4" >
+                    <div class="text-center 
+                    border border-dark 
+                    border-start-0 border-bottom-0 
+                    border-end-0 
+                    py-2 " style="width: 225px">Qty Checked / Received By</div>
+                </div>                
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@class='page']//span[@t-field='doc.note']" position="replace">
+        </xpath>
+
+        <xpath expr="//div[@class='page']//span[@t-field='doc.payment_term_id.note']" position="replace">
+            <p t-if="not is_html_empty(doc.payment_term_id.note)" style="font-weight: bold;" >
+                Payment Term: <span t-field="doc.payment_term_id">The payment should also be transmitted with love</span>
+            </p>
+            <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
+                id="fiscal_position_remark">
+                <strong>Fiscal Position Remark:</strong>
+                <span t-field="doc.fiscal_position_id.sudo().note">No further requirements for this payment</span>
+            </p>
+            <span t-field="doc.note" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if doc.company_id.terms_type != 'html' else ''}" name="order_note"/>
+        </xpath>
+
+    </template>
+</odoo>
