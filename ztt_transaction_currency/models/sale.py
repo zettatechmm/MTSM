@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
     def compute_currency_rate(self):
         for rec in self:
             if rec.company_id.currency_id.id!=rec.currency_id.id:
-                rec.currency_rate = rec.currency_id.rate
+                rec.currency_rate = rec.currency_id.inverse_rate
             else:
                 rec.currency_rate = 1
 
