@@ -15,8 +15,12 @@
             <field name="name">view_order_form_inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">                
-                <xpath expr="//field[@name='country_code']" position="before">
+            <field name="arch" type="xml">   
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>             
+                <xpath expr="//field[@name='currency_id']" position="after">
                     <field name='currency_rate'/>
                     <field name='x_studio_branch' invisible="1"/>
                 </xpath>
