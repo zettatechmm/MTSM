@@ -2,7 +2,7 @@
 
 {
     "name" : "ZTT Transaction Currency",
-    "version" : "17.0.0.0",
+    "version" : "17.0.0.1",
     "category" : "Currency",
     "depends" : ['base','sale','purchase','sale_renting', 'account', 'stock', 'sale_stock', 'stock_account', 'purchase_stock', 'mtsm_customization'],
     "author": "Zettatech",
