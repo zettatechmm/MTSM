@@ -30,3 +30,9 @@ class PurchaseOrderLine(models.Model):
                     "company_id": line.company_id.id,
                 })
                 line.analytic_distribution = distribution and line.analytic_distribution and {**distribution,**line.analytic_distribution} or distribution or line.analytic_distribution
+                
+    def _prepare_account_move_line(self, move=False):
+        res = super()._prepare_account_move_line()
+        if self.analytic_distribution and not self.display_type:
+            res['analytic_distribution'] = self.analytic_distribution
+        return res
