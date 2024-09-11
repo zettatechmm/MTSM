@@ -4,7 +4,7 @@
     "name" : "ZTT Transaction Currency",
     "version" : "17.0.0.1",
     "category" : "Currency",
-    "depends" : ['base','sale','purchase','sale_renting', 'stock', 'sale_stock'],
+    "depends" : ['base','sale','purchase','sale_renting', 'account', 'stock', 'sale_stock', 'stock_account', 'purchase_stock', 'mtsm_customization'],
     "author": "Zettatech",
     'summary': "Sale Customization",
     "description": """
@@ -26,15 +26,13 @@
 
     "website" : "https://odoo.zettatechmm.com",
     "data": [
-        'data/ir_sequence_data.xml',
-        'security/ir_rules.xml',
-        'views/ir_sequence_view.xml',
         'views/views.xml',
-        'report/delivery_slip_report.xml',
+        'views/banck_st_line_view.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
     ],
+    'license': "LGPL-3",
     "auto_install": False,
     "installable": True,
     # 'assets': {

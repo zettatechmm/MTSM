@@ -10,45 +10,33 @@ from xmlrpc.client import MAXINT
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"
 
-    # @api.depends('foreign_currency_id')
-    # def compute_currency_rate(self):
-    #     for rec in self:
-    #         if rec.foreign_currency_id.id!=rec.currency_id.id:
-    #             rec.currency_rate = rec.foreign_currency_id.rate
-    #         else:
-    #             rec.currency_rate = 1
-
-    currency_rate = fields.Float('Currency Rate',default=1,store=True,readonly=False)
-
+    currency_rate = fields.Float('Currency Rate',default=1, store=True,readonly=False)
 
 class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
-    @api.depends('foreign_currency_id')
-    def compute_currency_rate(self):
-        for rec in self:
-            if rec.foreign_currency_id.id!=rec.currency_id.id:
-                rec.currency_rate = rec.foreign_currency_id.rate
-                rec.statement_id.currency_rate = rec.currency_rate
-            else:
-                rec.currency_rate = 1
-                rec.statement_id.currency_rate = rec.currency_rate
-
-    currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
-
-    @api.depends('foreign_currency_id', 'date', 'amount', 'company_id','currency_rate')
-    def _compute_amount_currency(self):
-        for st_line in self:
-            if not st_line.foreign_currency_id:
-                st_line.amount_currency = False
-            elif st_line.date:
-                # only convert if it hasn't been set already
-                st_line.amount_currency = st_line.currency_id.with_context(currency_rate=st_line.currency_id.rate)._convert(
-                    from_amount=st_line.amount,
-                    to_currency=st_line.foreign_currency_id.with_context(currency_rate=st_line.currency_rate),
-                    company=st_line.company_id,
-                    date=st_line.date,
+    currency_rate = fields.Float('Currency Rate', default=0, store=True, readonly=False)
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        st_line = super().create(vals_list)
+        st_line.move_id.write({'currency_rate': st_line.currency_rate})
+        return st_line
+    
+    @api.onchange('amount', 'date', 'company_id')
+    def _onchange_amount(self):
+        if not self.amount:               
+            self.currency_rate = 0
+            self.statement_id.currency_rate = 0
+        elif self.date and self.currency_id != self.env.company.currency_id and not self.currency_rate:            
+            currency_rate= self.env['res.currency']._get_conversion_rate(
+                    from_currency=self.currency_id,
+                    to_currency=self.env.company.currency_id,
+                    company=self.company_id, 
+                    date=self.date,
                 )
+            self.currency_rate = currency_rate
+            self.statement_id.currency_id = currency_rate
 
     def _prepare_move_line_default_vals(self, counterpart_account_id=None):
         """ Prepare the dictionary to create the default account.move.lines for the current account.bank.statement.line
@@ -81,8 +69,8 @@ class AccountBankStatementLine(models.Model):
             company_amount = transaction_amount
         else:
             company_amount = journal_currency.with_context(currency_rate=self.currency_rate)\
-                ._convert(journal_amount, company_currency, self.journal_id.company_id, self.date)
-
+                ._convert(journal_amount, company_currency.with_context(currency_rate=company_currency.rate), self.journal_id.company_id, self.date)
+                
         liquidity_line_vals = {
             'name': self.payment_ref,
             'move_id': self.move_id.id,
@@ -91,7 +79,7 @@ class AccountBankStatementLine(models.Model):
             'currency_id': journal_currency.id,
             'amount_currency': journal_amount,
             'debit': company_amount > 0 and company_amount or 0.0,
-            'credit': company_amount < 0 and -company_amount or 0.0,
+            'credit': company_amount < 0 and -company_amount or 0.0,           
         }
 
         # Create the counterpart line values.

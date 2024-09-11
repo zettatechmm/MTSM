@@ -22,7 +22,6 @@
                 </xpath>             
                 <xpath expr="//field[@name='currency_id']" position="after">
                     <field name='currency_rate'/>
-                    <field name='x_studio_branch' invisible="1"/>
                 </xpath>
            </field>
         </record>
@@ -34,18 +33,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@id='header_right_group']/field[@name='currency_id']" position="after">
                     <field name='currency_rate'/>
-                    <field name='x_studio_branch' invisible="1"/>
-                </xpath>
-           </field>
-        </record>
-
-        <record id="view_bank_st_form_inherit" model="ir.ui.view">
-            <field name="name">view_bank_st_form_inherit</field>
-            <field name="model">account.bank.statement.line</field>
-            <field name="inherit_id" ref="account_accountant.view_bank_statement_line_form_bank_rec_widget"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='foreign_currency_id']" position="after">
-                    <field name='currency_rate' groups="base.group_multi_currency" invisible="not foreign_currency_id" />
                 </xpath>
            </field>
         </record>

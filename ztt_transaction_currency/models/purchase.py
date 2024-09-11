@@ -21,20 +21,12 @@ class PurchaseOrder(models.Model):
                 rec.currency_rate = 1
 
     currency_rate = fields.Float('Currency Rate',default=1,compute='compute_currency_rate',store=True,readonly=False)
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
-    
-    def _get_default_purchase_journal(self):
-        res = self.env['account.journal'].search([('type' , '=', 'purchase'), ('company_id', '=', self.env.company.id)], limit=1)
-        return res
     
     def _prepare_invoice(self):
         res = super()._prepare_invoice()
-        res.update({
-                    'x_studio_branch': self.x_studio_branch.id,
-                    'journal_id': self._get_default_purchase_journal().id
-                    })    
+        res.update({'currency_rate': self.currency_rate})    
         return res
-    
+
     def _add_supplier_to_product(self):
         # Add the partner in the supplier list of the product if the supplier is not registered for
         # this product. We limit to 10 the number of suppliers for a product to avoid the mess that
