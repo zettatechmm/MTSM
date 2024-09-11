@@ -30,6 +30,11 @@
                             Consignment Number: <t t-out="doc.consignment_no"/>
                         </strong>                        
                     </div>
+                    <div t-if="doc.payment_term_id" class="col-12 mt-1">
+                        <strong style="font-size: 16.5px">
+                            Payment Term: <t t-out="doc.payment_term_id.name"/>
+                        </strong>                        
+                    </div>
                 </div>                
             </div>
         </xpath>
@@ -59,7 +64,7 @@
         </xpath>
 
         <!-- signature -->
-        <xpath expr="//div[@class='page']" position="inside">    
+        <xpath expr="//div[hasclass('page')]" position="inside">    
             
             <div class="row" style="height: 120px"></div>                
             <div class="row" name="signature">
@@ -89,13 +94,13 @@
             </div>
         </xpath>
 
-        <xpath expr="//div[@class='page']//span[@t-field='doc.note']" position="replace">
+        <xpath expr="//div[hasclass('page')]//span[@t-field='doc.note']" position="replace">
         </xpath>
 
-        <xpath expr="//div[@class='page']//span[@t-field='doc.payment_term_id.note']" position="replace">
-            <p t-if="not is_html_empty(doc.payment_term_id.note)" style="font-weight: bold;" >
+        <xpath expr="//div[hasclass('page')]//span[@t-field='doc.payment_term_id.note']" position="replace">
+            <!-- <p t-if="not is_html_empty(doc.payment_term_id.note)" style="font-weight: bold;" >
                 Payment Term: <span t-field="doc.payment_term_id">The payment should also be transmitted with love</span>
-            </p>
+            </p> -->
             <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
                 id="fiscal_position_remark">
                 <strong>Fiscal Position Remark:</strong>
