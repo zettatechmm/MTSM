@@ -4,7 +4,12 @@ class AccountBankStatementLine(models.Model):
     _inherit = "account.bank.statement.line"
 
 
-    branch_id = fields.Many2one("x_branches", string="Branch", related="partner_id.x_studio_branch", readonly=False)
+    branch_id = fields.Many2one("x_branches", string="Branch")
+    
+    @api.onchange('partner_id')
+    def _onchange_partner(self):
+        if self.partner_id:
+            self.branch_id = self.partner_id.x_studio_branch.id
 
     def _prepare_move_line_default_vals(self, counterpart_account_id=None):
         res  = super()._prepare_move_line_default_vals(counterpart_account_id)
