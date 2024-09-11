@@ -3,7 +3,7 @@
     
     <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document" > 
         <!-- customer informations -->
-        <xpath expr="//div[@class='row']" position="replace">
+        <xpath expr="//div[hasclass('row')]" position="replace">
             <div class="row" style="margin-top: -50px;">  
                 <div class="col-7"></div> 
                 <div class="col-5">
@@ -104,13 +104,18 @@
                         <strong style="font-size: 16.5px">
                             Consignment Number: <t t-out="o.consignment_no"/>
                         </strong>                        
-                    </div>
-                </div>           
+                    </div>  
+                    <div t-if="o.invoice_payment_term_id" class="col-12 mt-1">
+                        <strong style="font-size: 16.5px">
+                            Payment Term: <t t-out="o.invoice_payment_term_id.name"/>
+                        </strong>                        
+                    </div>                   
+                </div>                          
             </div>
         </xpath>  
 
         <!-- space header -->
-        <xpath expr="//div[@class='mt-5 clearfix']" position="attributes">
+        <xpath expr="//div[hasclass('mt-5','clearfix')]" position="attributes">
             <attribute name="class">mt-2 clearfix</attribute>
         </xpath>
 
@@ -126,14 +131,14 @@
         <xpath expr="//table[@name='invoice_line_table']//th[@name='th_description']" position="before">        
             <th name="th_item" class="text-start"><span>Item</span></th>    
         </xpath>       
-        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="before">            
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="before">            
             <td name="td_item" t-attf-class="{{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                 <span class="text-nowrap" t-field="line.product_id.name"/>
             </td>
         </xpath>
 
         <!-- add description -->
-        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="replace">            
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="replace">            
             <td name="description_sale">
                 <span t-if="line.product_id.description_sale" t-field="line.product_id.description_sale" t-options="{'widget': 'text'}">Bacon Burger</span>
                 <span t-else="line.name" t-field="line.name" t-options="{'widget': 'text'}"></span>
@@ -141,14 +146,14 @@
         </xpath>
 
         <!-- unit price two decimal place -->
-        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//span[@t-field='line.price_unit']" position="attributes">            
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//t[@name='account_invoice_line_accountable']//span[@t-field='line.price_unit']" position="attributes">            
             <attribute name="t-options">{'widget': 'float', 'precision': 2}</attribute>
         </xpath>
 
         <!-- remove Taxes (Header / Line)-->
         <xpath expr="//table[@name='invoice_line_table']//th[@name='th_taxes']" position="replace">            
         </xpath>        
-        <xpath expr="//tbody[@class='invoice_tbody']//t[@name='account_invoice_line_accountable']//td[@name='td_taxes']" position="replace">            
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//t[@name='account_invoice_line_accountable']//td[@name='td_taxes']" position="replace">            
         </xpath>
 
         <!-- remove Payment Communication -->
@@ -156,12 +161,12 @@
         </xpath>
 
         <!-- note and signature -->
-        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="replace"> 
-            <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id">
+        <xpath expr="//div[hasclass('text-muted','mb-3') and @name='comment']" position="replace"> 
+            <!-- <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id">
                 Payment Term: <span id="payment_terms_note_id"                
                 t-field="o.invoice_payment_term_id"
                 name="payment_term">Payment within 30 calendar day</span><br/>
-            </div>
+            </div> -->
 
             <div class="text-muted" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if o.company_id.terms_type != 'html' else ''}" t-if="not is_html_empty(o.narration)" name="comment">
                 <span t-field="o.narration"/>
