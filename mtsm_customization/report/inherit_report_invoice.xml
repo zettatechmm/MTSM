@@ -25,7 +25,7 @@
                                         </t>     
                                         <span t-field="o.partner_id.state_id.name"/><br/>          
                                         <span t-field="o.partner_id.phone"/> 
-                                    </div>
+                                    </div> 
                                 </div>
                             </t>
                         </div>
@@ -104,8 +104,13 @@
                         <strong style="font-size: 16.5px">
                             Consignment Number: <t t-out="o.consignment_no"/>
                         </strong>                        
-                    </div>
-                </div>           
+                    </div>  
+                    <div t-if="o.consignment_no and o.invoice_payment_term_id" class="col-12 mt-1">
+                        <strong style="font-size: 16.5px">
+                            Payment Term: <t t-out="o.invoice_payment_term_id.name"/>
+                        </strong>                        
+                    </div>                   
+                </div>                          
             </div>
         </xpath>  
 
@@ -156,8 +161,8 @@
         </xpath>
 
         <!-- note and signature -->
-        <xpath expr="//div[@class='text-muted mb-3' and @name='comment']" position="replace"> 
-            <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id">
+        <xpath expr="//div[hasclass('text-muted','mb-3') and @name='comment']" position="replace"> 
+            <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id and not o.consignment_no">
                 Payment Term: <span id="payment_terms_note_id"                
                 t-field="o.invoice_payment_term_id"
                 name="payment_term">Payment within 30 calendar day</span><br/>

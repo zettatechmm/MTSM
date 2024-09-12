@@ -18,7 +18,7 @@
                         <t t-if="doc.partner_id.city">
                             <span t-field="doc.partner_id.city"/>,
                         </t>     
-                        <span t-field="doc.partner_id.state_id.name"/><br/>          
+                        <span t-field="doc.partner_id.state_id.name"/><br/>           
                         <span t-field="doc.partner_id.phone"/> 
                     </div>
                     <p t-if="doc.partner_id.vat">
@@ -28,6 +28,11 @@
                     <div t-if="doc.consignment_no" class="row mt-1">
                         <strong style="font-size: 16.5px">
                             Consignment Number: <t t-out="doc.consignment_no"/>
+                        </strong>                        
+                    </div>
+                    <div t-if="doc.consignment_no and doc.payment_term_id" class="col-12 mt-1">
+                        <strong style="font-size: 16.5px">
+                            Payment Term: <t t-out="doc.payment_term_id.name"/>
                         </strong>                        
                     </div>
                 </div>                
@@ -92,8 +97,8 @@
         <xpath expr="//div[@class='page']//span[@t-field='doc.note']" position="replace">
         </xpath>
 
-        <xpath expr="//div[@class='page']//span[@t-field='doc.payment_term_id.note']" position="replace">
-            <p t-if="not is_html_empty(doc.payment_term_id.note)" style="font-weight: bold;" >
+        <xpath expr="//div[hasclass('page')]//span[@t-field='doc.payment_term_id.note']" position="replace">
+            <p t-if="not is_html_empty(doc.payment_term_id.note) and not doc.consignment_no" style="font-weight: bold;" >
                 Payment Term: <span t-field="doc.payment_term_id">The payment should also be transmitted with love</span>
             </p>
             <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
