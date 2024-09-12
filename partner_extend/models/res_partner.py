@@ -46,7 +46,7 @@ class Partner(models.Model):
                                    column2='crmm_tag_id', string='CRM Tags', copy=False)
     phone = fields.Char(string='Viber Phone',unaccent=False)
     mobile = fields.Char(unaccent=False,required=True)
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    x_studio_branch = fields.Many2one("x_branches", string="Branch", default=lambda self: self.env.user.x_studio_default_branch.id)
 
     
     @api.constrains('ref')
