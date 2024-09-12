@@ -25,7 +25,7 @@
                                         </t>     
                                         <span t-field="o.partner_id.state_id.name"/><br/>          
                                         <span t-field="o.partner_id.phone"/> 
-                                    </div>
+                                    </div> 
                                 </div>
                             </t>
                         </div>
@@ -105,7 +105,7 @@
                             Consignment Number: <t t-out="o.consignment_no"/>
                         </strong>                        
                     </div>  
-                    <div t-if="o.invoice_payment_term_id" class="col-12 mt-1">
+                    <div t-if="o.consignment_no and o.invoice_payment_term_id" class="col-12 mt-1">
                         <strong style="font-size: 16.5px">
                             Payment Term: <t t-out="o.invoice_payment_term_id.name"/>
                         </strong>                        
@@ -162,11 +162,11 @@
 
         <!-- note and signature -->
         <xpath expr="//div[hasclass('text-muted','mb-3') and @name='comment']" position="replace"> 
-            <!-- <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id">
+            <div class="row" style="font-weight: bold;" t-if="o.invoice_payment_term_id and not o.consignment_no">
                 Payment Term: <span id="payment_terms_note_id"                
                 t-field="o.invoice_payment_term_id"
                 name="payment_term">Payment within 30 calendar day</span><br/>
-            </div> -->
+            </div>
 
             <div class="text-muted" t-attf-style="#{'text-align:justify;text-justify:inter-word;' if o.company_id.terms_type != 'html' else ''}" t-if="not is_html_empty(o.narration)" name="comment">
                 <span t-field="o.narration"/>
