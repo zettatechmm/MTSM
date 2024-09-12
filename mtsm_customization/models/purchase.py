@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    x_studio_branch = fields.Many2one("x_branches", string="Branch", default=lambda self: self.env.user.x_studio_default_branch.id)
     
     def _get_default_purchase_journal(self):
         res = self.env['account.journal'].search([('type' , '=', 'purchase'), ('company_id', '=', self.env.company.id)], limit=1)
