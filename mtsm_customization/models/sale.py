@@ -72,7 +72,8 @@ class SaleOrder(models.Model):
                     'journal_id': self._get_default_journal().id,
                     'x_studio_ordered_by': self.x_studio_ordered_by_1.id,
                     'x_studio_salespersons': self.x_studio_salespersons.ids,
-                    'consignment_no': self.consignment_no})
+                    'consignment_no': self.consignment_no, 
+                    'tag_ids': self.tag_ids.ids})
         return res   
     
     
