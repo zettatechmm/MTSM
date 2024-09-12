@@ -13,8 +13,8 @@ class AccountBankStatementLine(models.Model):
         check_company=True,
         domain="[('id', 'in', suitable_journal_ids), '|', ('x_studio_branch', '=', False), ('x_studio_branch', '=', x_studio_branch)]",
     )
-
     consignment_no = fields.Char(string="Consignment No", copy=False)
+    tag_ids = fields.Many2many("crm.tag", "move_id", "tag_id", "move_tag_rel", strin="Tags")
     
     def _get_journal(self, branch_id):
         res = self.env['account.journal'].search([('type' , '=', 'sale'), ('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
