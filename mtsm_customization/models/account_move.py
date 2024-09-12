@@ -4,7 +4,7 @@ from odoo.exceptions import UserError, ValidationError
 class AccountBankStatementLine(models.Model): 
     _inherit = "account.move"
         
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    x_studio_branch = fields.Many2one("x_branches", string="Branch", default=lambda self: self.env.user.x_studio_default_branch.id)
     journal_id = fields.Many2one(
         'account.journal',
         string='Journal',

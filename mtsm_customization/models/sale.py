@@ -4,7 +4,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     consignment_no = fields.Char(string="Consignment No", copy=False)
-    x_studio_branch = fields.Many2one("x_branches", default=lambda self: self.env.user.x_studio_default_branch.id)
+    x_studio_branch = fields.Many2one("x_branches", string="Branch", default=lambda self: self.env.user.x_studio_default_branch.id)
     warehouse_id = fields.Many2one(
                     'stock.warehouse', string='Warehouse', required=True,
                     compute='_compute_warehouse_id', store=True, readonly=False, precompute=True,
