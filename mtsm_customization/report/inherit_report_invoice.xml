@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <odoo>
+    <!-- change report header address according to branch -->
+    <template id="external_layout_boxed_inherit" inherit_id="web.external_layout_boxed" >
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div name="company_address" class="float-end mb4">
+                <t t-if='o.x_studio_branch.x_studio_code=="YGN"'>                                    
+                    <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
+                    <p style="font-size:15px;color: #4d4f4d;">No. (41), Pearl Street, Aung Myay Thar Si Housing</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Kamayut Township Yangon Myanmar</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                    
+                </t>  
+                <t t-if='o.x_studio_branch.x_studio_code=="MDY"'>                                    
+                    <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
+                    <p style="font-size:15px;color: #4d4f4d;">63st x between(42 x 43 st), Mahar Myaing</p>
+                    <p style="font-size:15px;color: #4d4f4d;">(2) Quarter, No.(Na-9)</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Mahar Aung Myae Township Mandalay Myanmar</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-945748800 ,09-953080084 ,09-959471818</p>                                    
+                </t>
+                <t t-if='o.x_studio_branch.x_studio_code=="MNY"'>                                    
+                    <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
+                    <p style="font-size:15px;color: #4d4f4d;">No.5 Yadanarpone Street, Yadanarpone Quarter</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Monywa Myanmar</p>
+                    <!-- <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p> -->
+                </t>
+                <t t-if='o.x_studio_branch.x_studio_code=="TGI"'>                                    
+                    <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
+                    <p style="font-size:15px;color: #4d4f4d;">No.2A, Anaw Ya Htar Street, Kan Auk Quarter,</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Min Kyaung ,Taunggyi Myanmar</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                    
+                </t>   
+                <t t-if='o.x_studio_branch.x_studio_code=="PYY"'>                                    
+                    <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
+                    <!-- <p style="font-size:15px;color: #4d4f4d;">No. (41), Pearl Street, Aung Myay Thar Si Housing</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Kamayut Township Yangon Myanmar</p>
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p> -->
+                </t>  
+            </div>
+        </xpath>
+    </template>
     
     <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document" > 
         <!-- customer informations -->
         <xpath expr="//div[@class='row']" position="replace">
             <div class="row" style="margin-top: -50px;">  
-                <div class="col-7"></div> 
+                <div class="col-7"></div>  
                 <div class="col-5">
                     <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
                         <div class="col-12">
