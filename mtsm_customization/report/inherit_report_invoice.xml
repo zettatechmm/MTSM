@@ -4,11 +4,11 @@
     <template id="external_layout_boxed_inherit" inherit_id="web.external_layout_boxed" >
         <xpath expr="//div[@name='company_address']" position="replace">
             <div name="company_address" class="float-end mb4">
-                <t t-if='o.x_studio_branch.x_studio_code=="YGN"'>                                    
+                <t t-if='o.x_studio_branch.x_studio_code=="YGN"'>                                     
                     <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
                     <p style="font-size:15px;color: #4d4f4d;">No. (41), Pearl Street, Aung Myay Thar Si Housing</p>
                     <p style="font-size:15px;color: #4d4f4d;">Kamayut Township Yangon Myanmar</p>
-                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                    
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                     
                 </t>  
                 <t t-if='o.x_studio_branch.x_studio_code=="MDY"'>                                    
                     <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
@@ -21,19 +21,19 @@
                     <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
                     <p style="font-size:15px;color: #4d4f4d;">No.5 Yadanarpone Street, Yadanarpone Quarter</p>
                     <p style="font-size:15px;color: #4d4f4d;">Monywa Myanmar</p>
-                    <!-- <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p> -->
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-953879967</p>
                 </t>
                 <t t-if='o.x_studio_branch.x_studio_code=="TGI"'>                                    
                     <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
                     <p style="font-size:15px;color: #4d4f4d;">No.2A, Anaw Ya Htar Street, Kan Auk Quarter,</p>
                     <p style="font-size:15px;color: #4d4f4d;">Min Kyaung ,Taunggyi Myanmar</p>
-                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                    
+                    <!-- <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>                                     -->
                 </t>   
                 <t t-if='o.x_studio_branch.x_studio_code=="PYY"'>                                    
                     <p style="font-size:15px;color: #4d4f4d;" t-field="o.company_id.name"></p>
-                    <!-- <p style="font-size:15px;color: #4d4f4d;">No. (41), Pearl Street, Aung Myay Thar Si Housing</p>
+                    <p style="font-size:15px;color: #4d4f4d;">No. (41), Pearl Street, Aung Myay Thar Si Housing</p>
                     <p style="font-size:15px;color: #4d4f4d;">Kamayut Township Yangon Myanmar</p>
-                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p> -->
+                    <p style="font-size:15px;color: #4d4f4d;">Ph: 09-977665108, 09-9771665109</p>
                 </t>  
             </div>
         </xpath>
