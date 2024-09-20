@@ -31,25 +31,22 @@ class SaleOrder(models.Model):
         
     #add note SO to DO
     def action_confirm(self):
-        res = super(SaleOrder, self).action_confirm()
+        res = super(SaleOrder, self).action_confirm() 
         for order in self:
             for picking in order.picking_ids:
                 picking.note = order.note
-        return res
-    
-    # def action_confirm(self):
-    #     super().action_confirm()
-    #     for order in self:
-    #         if order.x_studio_branch and 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
-    #             order.consignment_no = self.env['ir.sequence'].next_by_code_by_branch('so.consignment.branch', branch_id=order.x_studio_branch.id)
-
+        return res    
+  
     def action_confirm(self):
-        super().action_confirm()
+        super().action_confirm()        
         for order in self:
-            if 'consignment' in list(map(str.lower, order.tag_ids.mapped('name'))):
-                order.consignment_no = self.env['ir.sequence'].next_by_code('so.consi.sequence')
-            else:
-                order.consignment_no = False
+            tag_ids = list(map(str.lower, order.tag_ids.mapped('name')))
+            for name in tag_ids:                 
+                if name.__contains__('consignment'):
+                    order.consignment_no = self.env['ir.sequence'].next_by_code('so.consi.sequence')
+                else:
+                    order.consignment_no = False       
+            
 
             
     def _get_warehouse(self, branch_id):
