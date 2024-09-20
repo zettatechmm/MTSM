@@ -35,20 +35,15 @@ class SaleOrder(models.Model):
         for order in self:
             for picking in order.picking_ids:
                 picking.note = order.note
-        return res    
-  
-    def action_confirm(self):
-        super().action_confirm()        
-        for order in self:
+            
             tag_ids = list(map(str.lower, order.tag_ids.mapped('name')))
-            for name in tag_ids:                 
-                if name.__contains__('consignment'):
-                    order.consignment_no = self.env['ir.sequence'].next_by_code('so.consi.sequence')
-                else:
-                    order.consignment_no = False       
-            
-
-            
+            if any('consignment' in name for name in tag_ids):
+                order.consignment_no = self.env['ir.sequence'].next_by_code('so.consi.sequence')
+            else:
+                order.consignment_no = False
+        return res   
+  
+    
     def _get_warehouse(self, branch_id):
         res = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id), ('x_studio_branch', '=', branch_id)], limit=1)
         return res
