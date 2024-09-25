@@ -6,14 +6,19 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_out_invoice_tree"/>
             <field name="arch" type="xml">
-                <data>
                     <xpath expr="//field[@name='activity_ids']" position="after">
                         <field name="invoice_payment_term_id" optional="show"/>
                         <field name="categ_ids" widget="many2many_tags"/>
                         <field name="state_id"/>
                         <field name="township_id"/>
                     </xpath>
-                </data>
+                    <xpath expr="//tree/field[@name='invoice_partner_display_name'][2]" position="attributes">
+                       <attribute name="column_invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='name']" position="after">
+                        <field name="customer_code"/>
+                        <field name="customer_name"/>
+                    </xpath>
             </field>
         </record>
     </data>
