@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- transition.report.wizard form view -->
+        <record id="transition_report_wizard" model="ir.ui.view">
+            <field name="name">transition.report.wizard.view.form</field>
+            <field name="model">transition.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Stock Details Report">
+                    <group string="Date Range">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+		            <group string="Locations">
+                        <field name="is_all_locations" />
+                        <field name="location_ids" widget="many2many_tags" 
+                            domain="[('usage', 'in', ['internal','transit'])]"
+                            readonly = "is_all_locations != False" />
+                    </group>
+                    <group string="Products">
+                        <field name="is_all_products" />
+                        <field name="product_ids" 
+                            widget="many2many_tags"
+                            domain="[('detailed_type', '=', 'product')]"
+                            readonly="is_all_products != False">
+                            <!-- <tree create="true" delete="true" edit="true">
+                                <field name="default_code"/>
+                                <field name="name"/>
+                            </tree> -->
+                        </field>
+                    </group>
+
+                    <footer>
+                        <button name="print_report_xls" string="Print (XLS)" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Stock Location Tree view -->
+        <!-- not sure about use of this. so may need to remove later -->
+        <record id="view_location_tree2_inherit" model="ir.ui.view">
+            <field name="name">stock.location.tree</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_tree2"/>
+            <field name="arch" type="xml">
+                <field name="complete_name" position="after">
+                    <field name="wh_name" />
+                </field>
+            </field>
+        </record>
+        <record id="stock_ledger_report_wizard_action" model="ir.actions.act_window">
+            <field name="name">Stock Ledger Detail</field>
+            <field name="res_model">transition.report.wizard</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="transition_report_wizard" />
+            <field name="target">new</field>
+        </record>
+
+        <menuitem 
+            id="stock_ledger_report_menu_act" 
+            name="Stock Ledger Detail" 
+            parent="stock.menu_warehouse_report" 
+            action="stock_ledger_report_wizard_action" 
+            sequence="151"
+            groups="stock.group_stock_manager"/>
+    </data>
+</odoo>

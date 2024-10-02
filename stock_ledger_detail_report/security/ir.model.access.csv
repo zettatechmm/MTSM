@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transition_report_wizard,stock_ledger_detail_report.transition_report_wizard,model_transition_report_wizard,,1,1,1,1
+access_stock_report_helper,stock_ledger_detail_report.stock_report_helper,model_stock_report_helper,,1,1,1,0
