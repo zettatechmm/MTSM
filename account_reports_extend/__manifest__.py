@@ -25,5 +25,6 @@ Accounting Reports
             # 'account_reports/static/src/widgets/**/*',
         ],
 
-    }
+    },
+    'license': "LGPL-3",
 }

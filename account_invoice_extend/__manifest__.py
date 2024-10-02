@@ -14,4 +14,5 @@ Accounting Invoice
     ],
     'auto_install': True,
     'installable': True,
+    'license': "LGPL-3",
 }
