@@ -12,7 +12,7 @@
     'author': "Zettatech",
     'website': "",
     'category': 'Inventory',
-    'version': '0.1',
+    'version': '0.2',
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock'],
     # always loaded
