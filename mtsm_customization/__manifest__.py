@@ -17,6 +17,8 @@
         'report/delivery_slip_report.xml',
         'report/inherit_report_invoice.xml',
         'report/inherit_sale_report.xml',
+        'views/account_move_views.xml',
+        'views/sale_order_line_views.xml'
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
