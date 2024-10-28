@@ -1,0 +1,18 @@
+<odoo>
+	<data>
+        <record id="view_order_line_tree_inherit" model="ir.ui.view">
+            <field name="name">view_order_line_tree_inherit</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">  
+                <xpath expr="//tree//field[@name='order_partner_id']" position="before">
+                    <field name="customer_name" string="Customer Name"/>
+                    <field name="customer_code" string="Code"/>
+                </xpath>              
+                <xpath expr="//tree//field[@name='order_partner_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+           </field>
+        </record>
+    </data>
+</odoo>
