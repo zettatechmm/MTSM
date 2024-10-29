@@ -11,6 +11,9 @@
                     <field name="customer_name" string="Customer Name"/>
                     <field name="product_id" column_invisible="1"/>
                 </xpath>
+                 <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="product_code" string="Product Code"/>
                     <field name="product_name" string="Product Name"/>
