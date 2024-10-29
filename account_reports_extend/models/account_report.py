@@ -62,3 +62,31 @@ class AccountReport(models.Model):
             partner_branch_ids = [int(branch) for branch in options['partner_branches']]
             domain.append(('partner_id.x_studio_branch', 'in', partner_branch_ids))
         return domain
+
+
+    ####################################################
+    # OPTIONS: account code
+    ####################################################
+
+    def _init_options_account_code(self, options, previous_options=None):
+        domain = []
+        options['account_codes'] = previous_options and previous_options.get('account_codes') or []        
+        selected_account_code_ids = [int(account) for account in options['account_codes']]       
+        selected_account_codes = selected_account_code_ids and self.env['account.account'].browse(selected_account_code_ids) or self.env['account.account'].search(domain)     
+        options['selected_account_codes'] = selected_account_codes.mapped('name')  
+
+    @api.model
+    def _get_options_account_code_domain(self, options):
+        domain = []
+        domain.append(('company_id', '=', self.env.user.company_id.id))
+        if options.get('account_codes'):
+            selected_account_code_ids = [int(code) for code in options['account_codes']]
+            domain.append(('account_id', 'in', selected_account_code_ids))
+        return domain
+    
+    def _get_options_domain(self, options, date_scope):
+        self.ensure_one()
+        domain = super()._get_options_domain(options, date_scope)
+        domain += self._get_options_account_code_domain(options)
+
+        return domain
