@@ -1,18 +1,37 @@
 <odoo>
 	<data>
-        <record id="view_order_line_tree_inherit" model="ir.ui.view">
+        <record id="view_order_line_tree_inherit_custom" model="ir.ui.view">
             <field name="name">view_order_line_tree_inherit</field>
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_order_line_tree"/>
-            <field name="arch" type="xml">  
-                <xpath expr="//tree//field[@name='order_partner_id']" position="before">
-                    <field name="customer_name" string="Customer Name"/>
-                    <field name="customer_code" string="Code"/>
-                </xpath>              
-                <xpath expr="//tree//field[@name='order_partner_id']" position="attributes">
-                    <attribute name="column_invisible">1</attribute>
-                </xpath>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_partner_id']" position="before">
+                <field name="customer_code" string="Customer Code"/>
+                <field name="customer_name" string="Customer Name"/>
+                <field name="product_id" column_invisible="1"/>
+            </xpath>   
+            <xpath expr="//field[@name='order_partner_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="product_code" string="Product Code"/>
+                <field name="product_name" string="Product Name"/>
+            </xpath>
            </field>
+        </record>
+
+        <record id="sale_order_line_custom_filter_view" model="ir.ui.view">
+            <field name="name">sale.order.line.custom.filter</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="FOC" name="foc_filter" domain="[('order_id.tag_ids.name', 'ilike', 'Foc')]"/>
+                    <filter string="Consignment" name="consignment_filter" domain="[('order_id.tag_ids.name', 'ilike', 'Consignment')]"/>
+                    <filter string="Without FOC" name="without_foc_filter" domain="['|', ('order_id.tag_ids', '=', False), ('order_id.tag_ids.name', 'not ilike', 'Foc')]"/>
+                    <filter string="No Consignment" name="no_consignment_filter" domain="['|', ('order_id.tag_ids', '=', False), ('order_id.tag_ids.name', 'not ilike', 'Consignment')]"/>
+                </xpath>
+            </field>
         </record>
     </data>
 </odoo>
