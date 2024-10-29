@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="account_reports_extend.AccountReportFiltersCustomizableInherit" t-inherit="account_reports.AccountReportFiltersCustomizable" t-inherit-mode="extension">
+        <xpath expr="//div[@id='filter_extra_options']" position="before">
+            <t t-if="controller.groups.analytic_accounting and controller.filters.show_analytic">
+                <div id="filter_account_code" >
+                    <t t-call="account_reports.AccountReportFilterAccountCode"/> 
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

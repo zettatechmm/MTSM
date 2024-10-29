@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportFilterAccountCode">
+        <Dropdown togglerClass="'btn btn-secondary'">
+            <t t-set-slot="toggler">
+                <i class="fa fa-folder-open me-1"/>Accounts
+            </t>
+
+            <div class="dropdown-item d-flex">
+                <label>Accounts</label>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('account.account', 'account_codes')"/>    
+            </div>
+            
+            <!-- <t t-set="journal_ids" t-value="[]"/>
+            <t t-foreach="controller.options.journals" t-as="journal" t-key="journal.id">
+                <t t-if="journal.selected">
+                    <t t-set="journal_ids" t-value="journal_ids + [journal.id]"/>
+                </t>
+            </t>
+
+            <t t-esc="journal_ids"/> -->
+
+        </Dropdown>
+    </t>
+</templates>
