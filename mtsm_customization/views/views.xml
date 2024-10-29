@@ -24,7 +24,7 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@id='header_right_group']/field[@name='currency_id']" position="after">
-                    <field name='x_studio_branch' invisible="1"/>
+                    <field name='x_studio_branch'/>
                 </xpath>
                 <xpath expr="//field[@name='partner_shipping_id']" position="after">
                     <field name='consignment_no' readonly="1" invisible="not consignment_no"/>
