@@ -10,6 +10,11 @@
                 <label>Accounts</label>
                 <MultiRecordSelector t-props="getMultiRecordSelectorProps('account.account', 'account_codes')"/>    
             </div>
+
+            <div class="dropdown-item d-flex">
+                <label style="padding-right: 30px;">Tags</label>
+                <MultiRecordSelector  t-props="getMultiRecordSelectorProps('account.account.tag', 'account_tags')"/>    
+            </div>
             
             <!-- <t t-set="journal_ids" t-value="[]"/>
             <t t-foreach="controller.options.journals" t-as="journal" t-key="journal.id">
