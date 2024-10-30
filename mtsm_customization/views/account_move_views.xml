@@ -20,7 +20,7 @@
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="return_quantity" string="Quantity"/>
-                    <field name="return_unit_price" string="Unit Price"/>
+                    <field name="price_unit" string="Unit Price"/>
                     <field name="return_full_amount" string="Full Amount"/>
                     <field name="discount" />
                     <field name="price_total" />
