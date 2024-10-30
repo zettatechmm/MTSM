@@ -11,10 +11,9 @@ class AccountMoveLine(models.Model):
     product_code = fields.Char(string="Product Code",related="product_id.default_code") 
 
     return_quantity = fields.Float(string="Quantity", compute="_compute_return_quantity")
-    return_unit_price = fields.Float(string="Unit Price", compute="_compute_return_unit_price")
     return_full_amount = fields.Float(strin="Full Amount", compute="_compute_return_full_amount")
 
-    @api.depends('quantity')
+    @api.depends('quantity','move_type')
     def _compute_return_quantity(self):
         for rec in self:
             if rec.move_type == 'out_refund':
@@ -22,15 +21,7 @@ class AccountMoveLine(models.Model):
             else:
                rec.return_quantity = rec.quantity
 
-    @api.depends('price_unit')
-    def _compute_return_unit_price(self):
-        for rec in self:
-            if rec.move_type == 'out_refund':
-             rec.return_unit_price = - rec.price_unit
-            else:
-               rec.return_unit_price = rec.price_unit
-
     @api.depends('quantity','price_unit')
     def _compute_return_full_amount(self):
         for rec in self:
-            rec.return_full_amount = rec.return_quantity * rec.return_unit_price or 0.0
+            rec.return_full_amount = rec.return_quantity * rec.price_unit or 0.0
