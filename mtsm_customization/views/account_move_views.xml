@@ -23,7 +23,7 @@
                     <field name="price_unit" string="Unit Price"/>
                     <field name="return_full_amount" string="Full Amount"/>
                     <field name="discount" />
-                    <field name="price_total" />
+                    <field name="return_price_total" string="Total Amount"/>
                     <field name="x_studio_salespersons" widget="many2many_tags"/>
                     <field name="x_studio_ordered_by" />
                     <field name="x_studio_status" />
