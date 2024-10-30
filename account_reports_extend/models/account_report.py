@@ -69,11 +69,16 @@ class AccountReport(models.Model):
     ####################################################
 
     def _init_options_account_code(self, options, previous_options=None):
-        domain = []
+        domain = [] 
         options['account_codes'] = previous_options and previous_options.get('account_codes') or []        
         selected_account_code_ids = [int(account) for account in options['account_codes']]       
         selected_account_codes = selected_account_code_ids and self.env['account.account'].browse(selected_account_code_ids) or self.env['account.account'].search(domain)     
         options['selected_account_codes'] = selected_account_codes.mapped('name')  
+
+        options['account_tags'] = previous_options and previous_options.get('account_tags') or []        
+        selected_account_tag_ids = [int(account) for account in options['account_tags']]       
+        selected_account_tags = selected_account_tag_ids and self.env['account.account.tag'].browse(selected_account_tag_ids) or self.env['account.account.tag'].search(domain)     
+        options['selected_account_tags'] = selected_account_tags.mapped('name') 
 
     @api.model
     def _get_options_account_code_domain(self, options):
@@ -82,6 +87,10 @@ class AccountReport(models.Model):
         if options.get('account_codes'):
             selected_account_code_ids = [int(code) for code in options['account_codes']]
             domain.append(('account_id', 'in', selected_account_code_ids))
+
+        if options.get('account_tags'):
+            selected_account_tag_ids = [int(code) for code in options['account_tags']]
+            domain.append(('account_id.tag_ids', 'in', selected_account_tag_ids))
         return domain
     
     def _get_options_domain(self, options, date_scope):
