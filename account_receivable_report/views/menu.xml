@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="action_account_report_detail" model="ir.actions.act_window">
+            <field name="name">Account Report Detail</field>
+            <field name="res_model">wizard.receivable.report</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_form_receivable_report_wizard" />
+            <field name="target">new</field>
+        </record> 
+
+        <menuitem id="menu_action_account_report_detail" 
+            name="Receivable Detail Report" 
+            action="action_account_report_detail" 
+            parent="account_reports.account_reports_partners_reports_menu" 
+            groups="account.group_account_readonly"
+            sequence="1"/>  
+    </data>
+</odoo>
