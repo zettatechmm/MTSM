@@ -1,0 +1,1 @@
+from . import receivable_report_wiz
