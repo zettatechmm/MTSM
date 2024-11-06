@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate='0'>    
+    
+    <record id="custom_receivable_report" model="account.report">
+        <field name="name">Customer Receivable</field>
+        <field name="filter_date_range" eval="False"/>
+        <field name="filter_unfold_all" eval="True"/>
+        <field name="filter_partner" eval="True"/>
+        <field name="filter_period_comparison" eval="False"/>
+        <field name="filter_account_type">receivable</field>
+        <field name="filter_hierarchy">never</field>
+        <field name="filter_show_draft" eval="False"/>
+        <field name="filter_multi_company">selector</field>
+        <field name="default_opening_date_filter">today</field>
+        <field name="custom_handler_model_id" ref="model_custom_receivable_report_handler"/>
+        <field name="column_ids">
+            <record id="custom_receivable_report_customer_name" model="account.report.column">
+                <field name="name">Customer Name</field>
+                <field name="expression_label">customer_name</field>
+                <field name="sequence">1</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="custom_receivable_report_invoice_number" model="account.report.column">
+                <field name="name">Invoice Number</field>
+                <field name="expression_label">invoice_number</field>
+                <field name="sequence">2</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="custom_receivable_report_invoice_date" model="account.report.column">
+                <field name="name">Invoice Date</field>
+                <field name="expression_label">invoice_date</field>
+                <field name="figure_type">date</field>
+                <field name="sequence">3</field>
+                <field name="sortable" eval="True"/>
+            </record>
+            <record id="custom_receivable_report_due_date" model="account.report.column">
+                <field name="name">Due Date</field>
+                <field name="expression_label">due_date</field>
+                <field name="figure_type">date</field>
+                <field name="sequence">4</field>
+                <field name="sortable" eval="True"/>
+            </record>
+            <record id="custom_receivable_report_overdue_days" model="account.report.column">
+                <field name="name">Overdue Days</field>
+                <field name="expression_label">overdue_days</field>
+                <field name="figure_type">integer</field>
+                <field name="sequence">5</field>
+            </record>
+            <record id="custom_receivable_report_amount_invoice" model="account.report.column">
+                <field name="name">Invoice Amount</field>
+                <field name="expression_label">amount_invoice</field>
+                <field name="sequence">6</field>
+            </record>
+            <record id="custom_receivable_report_amount_due" model="account.report.column">
+                <field name="name">Due Amount</field>
+                <field name="expression_label">amount_due</field>
+                <field name="sequence">7</field>
+            </record>
+            <!-- <record id="custom_receivable_report_balance" model="account.report.column">
+                <field name="name">Balance</field>
+                <field name="expression_label">balance</field>
+                <field name="sequence">8</field>
+            </record> -->
+            
+        </field>
+        <field name="line_ids">
+            <record id="custom_receivable_line" model="account.report.line">
+                <field name="name">Customer Receivable</field>
+                <field name="groupby">partner_id, id</field>
+                <field name="expression_ids">
+                    <record id="custom_receivable_line_customer_name" model="account.report.expression">
+                        <field name="label">customer_name</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">customer_name</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="customer_receivable_line_invoice_date" model="account.report.expression">
+                        <field name="label">invoice_date</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">invoice_date</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    
+                    <!-- <record id="custom_receivable_line_invoice_date" model="account.report.expression">
+                        <field name="label">invoice_date</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">invoice_date</field>
+                        <field name="auditable" eval="False"/>
+                    </record> -->
+                    <record id="custom_receivable_line_due_date" model="account.report.expression">
+                        <field name="label">due_date</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">due_date</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="custom_receivable_line_overdue_days" model="account.report.expression">
+                        <field name="label">overdue_days</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">overdue_days</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="custom_receivable_line_amount_invoice" model="account.report.expression">
+                        <field name="label">amount_invoice</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">amount_invoice</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="custom_receivable_line_amount_due" model="account.report.expression">
+                        <field name="label">amount_due</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">amount_due</field>
+                        <field name="auditable" eval="False"/>
+                    </record>
+                    <!-- <record id="custom_receivable_line_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_custom_receivable</field>
+                        <field name="subformula">balance</field>
+                        <field name="auditable" eval="False"/>
+                    </record> -->
+                </field>
+            </record>
+        </field>
+        
+    </record>
+
+    
+
+</odoo>

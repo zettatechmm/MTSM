@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_account_report_custom_receivable" model="ir.actions.client">
+            <field name="name">Customer Receivable</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'report_id': ref('ztt_custom_reports.custom_receivable_report')}" />
+        </record>
+    </data>
+</odoo>
