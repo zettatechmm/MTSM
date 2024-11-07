@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_action_custom_receivable" name="Customer Receivable" action="action_account_report_custom_receivable" parent="account_reports.account_reports_partners_reports_menu" groups="account.group_account_readonly"/>
+</odoo>
