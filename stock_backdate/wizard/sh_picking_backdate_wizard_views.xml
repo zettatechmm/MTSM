@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_picking_backdate_wizard_view_form" model="ir.ui.view">
+        <field name="name">stock.picking.backdate.wizard.view</field>
+        <field name="model">sh.picking.backdate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="stock_picking_ids" widget="many2many_tags" invisible="1" />
+                            <field name="company_id" invisible="1" />
+                            <field name="scheduled_date" />
+                            <field name="remarks" invisible="not is_remarks" required="is_remarks_mandatory and is_boolean" />
+                            <field name="is_remarks" invisible="1" />
+                            <field name="is_remarks_mandatory" invisible="1" />
+                            <field name="is_boolean" invisible="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm" name="assign_backdate" type="object" class="oe_highlight" />
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" icon="fa-remove" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
