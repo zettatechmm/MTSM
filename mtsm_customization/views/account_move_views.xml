@@ -19,6 +19,7 @@
                     <field name="product_name" string="Product Name"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="uom_id" string="Unit Of Measure"/>
                     <field name="return_quantity" string="Quantity"/>
                     <field name="price_unit" string="Unit Price"/>
                     <field name="return_full_amount" string="Full Amount"/>
