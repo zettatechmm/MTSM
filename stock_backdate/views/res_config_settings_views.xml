@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sh_stock_backdate_res_config_settings" model="ir.ui.view">
+        <field name="name">Stock Backdate Settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <app name="stock" position="inside">
+                <block title="Stock Backdate Picking Settings" name="stock_backdate">
+                    <setting>
+                        <field name="backdate_for_picking" />
+                    </setting>
+                    <setting invisible="not backdate_for_picking">
+                        <field name="remark_for_picking" />
+                        <div class="content-group" invisible="not remark_for_picking or not backdate_for_picking">
+                            <div class="mt8">
+                                <field class="oe_inline" name="remark_mandatory_for_picking" />
+                                <label for="remark_mandatory_for_picking"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+                <block title="Stock Backdate Scrap Settings" name="stock_scrap_backdate">
+                    <setting>
+                        <field name="backdate_for_scrap" />
+                    </setting>
+                    <setting invisible="not backdate_for_scrap">
+                        <field name="remark_for_scrap"/>
+                        <div class="content-group" invisible="not remark_for_scrap or not backdate_for_scrap">
+                            <div class="mt8">
+                                <field class="oe_inline" name="remark_mandatory_for_scrap" />
+                                <label for="remark_mandatory_for_scrap"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </app>
+        </field>
+    </record>
+
+</odoo>
