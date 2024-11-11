@@ -9,6 +9,7 @@ class AccountMoveLine(models.Model):
 
     product_name = fields.Char(string="Product Name",related="product_id.name")
     product_code = fields.Char(string="Product Code",related="product_id.default_code") 
+    uom_id = fields.Many2one('uom.uom',string='Unit of Measure',related='product_id.uom_id', store=True)
 
     return_quantity = fields.Float(string="Quantity", compute="_compute_return_quantity")
     return_full_amount = fields.Float(string="Full Amount", compute="_compute_return_full_amount")
