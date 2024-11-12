@@ -11,8 +11,7 @@ class AccountInvoice(models.Model):
     customer_name= fields.Char(string='Customer', related='partner_id.name', store=True)
      
 class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'    
-
+    _inherit = 'account.move.line'        
     
     @api.model
     def _prepare_move_line_residual_amounts(self, aml_values, counterpart_currency, shadowed_aml_values=None, other_aml_values=None):
