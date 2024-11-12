@@ -3,7 +3,7 @@
 {
     "name" : "Stock Backdate",
     "version" : "17.0.0.0",    
-    "depends" : ['base', 'stock'],
+    "depends" : ['base', 'stock', 'sale', 'purchase'],
     "author": "Zettatech",
     'summary': "Stock Backdate",
     "description": """    
