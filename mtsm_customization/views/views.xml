@@ -19,9 +19,9 @@
                     <div class="o_td_label" invisible="state in ['sale', 'cancel']">
                         <label for="date_order" string="Quotation Date"/>
                     </div>
-                    <field name="date_order" nolabel="1" invisible="state in ['sale', 'cancel']" readonly="state in ['cancel', 'sale']"/>
                 </xpath>
-                <xpath expr="//group[@name='order_details']//field[@name='date_order']" position="replace">
+                <xpath expr="//group[@name='order_details']//field[@name='date_order'][1]" position="replace">
+                    <field name="date_order" nolabel="1" invisible="state in ['sale', 'cancel']" readonly="state in ['cancel', 'sale']"/>
                 </xpath>
            </field>
         </record>
