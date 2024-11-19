@@ -11,7 +11,6 @@ Accounting Invoice
     'depends': ['base', 'account', 'contacts','partner_extend',],
     'data': [
         'views/custom_invoice.xml',
-        'views/account_move_view.xml',
     ],
     'auto_install': True,
     'installable': True,
