@@ -9,6 +9,28 @@
                 <xpath expr="//field[@name='line_ids']//tree//field[@name='partner_id']" position="attributes">
                     <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='line_ids']//tree//field[@name='account_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_payment_custom" model="ir.ui.view">
+            <field name="name">account.payment.custom</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='main_group']//group[@name='group1']//field[@name='partner_id'][1]" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='main_group']//group[@name='group1']//field[@name='partner_id'][2]" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
             </field>
         </record>
     </data>

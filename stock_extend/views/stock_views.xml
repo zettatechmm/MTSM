@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit Stock Picking Form -->
+    <record id="stock_picking_inherit_form" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="stock_landed_cost_inherit_form" model="ir.ui.view">
+        <field name="name">stock.landed.cost.inherit</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_ids']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+            </xpath>
+             <xpath expr="//field[@name='vendor_bill_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
