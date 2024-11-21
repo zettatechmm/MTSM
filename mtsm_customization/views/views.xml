@@ -21,6 +21,12 @@
                 <xpath expr="//group[@name='order_details']//field[@name='date_order'][1]" position="attributes">
                     <attribute name="groups"></attribute>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_template_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_edit': True}</attribute>
+                </xpath>
            </field>
         </record>
 

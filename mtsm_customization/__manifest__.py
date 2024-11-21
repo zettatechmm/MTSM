@@ -18,7 +18,8 @@
         'report/inherit_report_invoice.xml',
         'report/inherit_sale_report.xml',
         'views/account_move_views.xml',
-        'views/sale_order_line_views.xml'
+        'views/sale_order_line_views.xml',
+        'views/purchase_view.xml',
     ],
     'qweb': [
         # 'static/src/xml/template.xml',
