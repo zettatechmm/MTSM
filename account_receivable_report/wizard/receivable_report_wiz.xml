@@ -9,8 +9,7 @@
                 <form>
                     <group>
                         <field name='partner_ids' string="Customers" widget="many2many_tags" />
-                        <field name='from_date' />
-                        <field name='to_date' />
+                        <field name='print_date' />
                         <field name='tag_ids' widget="many2many_tags" />
                         <field name='branch_ids' widget="many2many_tags" />
                         <field name='township_ids' widget="many2many_tags" />
