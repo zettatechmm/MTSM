@@ -29,9 +29,16 @@ class PartnerSelect(models.TransientModel):
     def get_data(self):
         
         query = """
-                    SELECT partner_name,invoice_name,date,invoice_date_due,overdue_days,amount_currency,amount_total,amount_residual,partner_id,currency_id FROM (
+                    SELECT partner_name,invoice_name,date,invoice_date_due,overdue_days,amount_currency,amount_total,amount_residual,partner_id,currency_id,
+                    payment_term,branch_name,township_name,partner_ref,sale_person,partner_state FROM (
                 SELECT rp.name AS partner_name, move.name AS invoice_name, aml.date,
+                payment_term.name AS payment_term,
+                branch.x_name AS branch_name,
+                township.name AS township_name,
+                state.name AS partner_state,
+                rp.ref AS partner_ref,
                 move.invoice_date_due AS invoice_date_due,
+                string_agg(hr.name, ', ') AS sale_person,
                 CASE WHEN (%(print_date)s - move.invoice_date_due::date) > 0 THEN (%(print_date)s - move.invoice_date_due::date) ELSE 0 END AS overdue_days,
                 (SUM(aml.amount_currency)
                 - COALESCE(SUM(part_debit.debit_amount_currency), 0)
@@ -52,9 +59,14 @@ class PartnerSelect(models.TransientModel):
                 LEFT JOIN res_township township ON township.id = rp.township_id
                 LEFT JOIN res_partner_res_partner_category_rel rel ON rel.partner_id = rp.id
                 LEFT JOIN res_partner_category category ON category.id = rel.category_id
+                
+                LEFT JOIN x_account_move_hr_employee_rel inv_hr_rel ON inv_hr_rel.account_move_id = move.id
+                LEFT JOIN hr_employee hr ON hr.id = inv_hr_rel.hr_employee_id
+
                 LEFT JOIN res_country_state state ON state.id = rp.state_id
                 LEFT JOIN x_branches branch ON branch.id = rp.x_studio_branch
                 JOIN res_currency currency ON move.currency_id = currency.id
+                JOIN account_payment_term payment_term ON move.invoice_payment_term_id = payment_term.id
                 LEFT JOIN LATERAL (
                     SELECT
                         SUM(part.amount) AS amount,
@@ -78,17 +90,18 @@ class PartnerSelect(models.TransientModel):
                 AND aml.date <=  %(print_date)s
                 AND move.move_type = 'out_invoice'
                 AND rp.id IN %(partner_ids)s
-                AND township.id IN %(township_ids)s
-                AND category.id IN %(tag_ids)s
-                AND state.id IN %(state_ids)s
-                AND branch.id IN %(branch_ids)s
-                GROUP BY rp.name,aml.partner_id,account.code,aml.date,move.name,move.invoice_date_due,aml.currency_id
+                AND (township.id IN %(township_ids)s OR township.id IS NULL)
+                AND (category.id IN %(tag_ids)s OR category.id IS NULL)
+                AND (state.id IN %(state_ids)s OR state.id IS NULL)
+                AND (branch.id IN %(branch_ids)s OR branch.id IS NULL)
+                GROUP BY rp.name,aml.partner_id,account.code,aml.date,move.name,move.invoice_date_due,aml.currency_id,
+                payment_term,branch_name,township_name,partner_ref,partner_state
             ) receivable
             WHERE receivable.amount_residual > 0
             ORDER BY partner_id,date
 """
         
-        township_ids =  self.township_ids.ids if self.township_ids else self.env['res.township'].search([]).ids
+        township_ids =  self.township_ids.ids if self.township_ids else self.env['res.township'].search([]).ids 
         partner_ids =  self.partner_ids.ids if self.partner_ids else self.env['res.partner'].search([]).ids
         tag_ids =  self.tag_ids.ids if self.tag_ids else self.env['res.partner.category'].search([]).ids
         state_ids = self.state_ids.ids if self.state_ids else self.env['res.country.state'].search([]).ids
@@ -125,35 +138,35 @@ class PartnerSelect(models.TransientModel):
             elif col in [1]:
                 sheet.write(0, col, header, date_style)
 
-
-        headers = ['Customer Name','Invoice Number','Invoice Date','Due Date','Overdue Days','Invoice Amount','Due Amount','Balance']
+        headers = ['Customer Code','Invoice Number','Customer Name','Branch','Township','State','Sale Person','Payment Term','Invoice Date','Due Date','Overdue Days','Invoice Amount','Due Amount','Balance']
         for col,header in enumerate(headers):
             sheet.write(3,col,header,header_style)
-            sheet.col(0).width = 8000 
+            sheet.col(0).width = 6000 
+            sheet.col(1).width = 8000 
             sheet.col(col + 1).width = 6000 
  
         report_data = self.get_data()
 
         row = 4
         for data in report_data:
-            journal = [data['partner_name'], data['invoice_name'], data['date'], data['invoice_date_due'], data['overdue_days'],data['amount_total'], data['amount_residual']]
+            journal = [data['partner_ref'],data['invoice_name'],data['partner_name'], data['branch_name']['en_US'],data['township_name'],data['partner_state'],data['sale_person'],data['payment_term']['en_US'], data['date'], data['invoice_date_due'], data['overdue_days'],data['amount_total'], data['amount_residual']]
 
             for col, value in enumerate(journal):
-                if col in [2,3]:
+                if col in [8,9]:
                     sheet.write(row, col, value, date_style)
-                elif col in [4]:
+                elif col in [10]:
                     sheet.write(row, col, value, number_style)
-                elif col in [5,6]:
+                elif col in [11,12]:
                     sheet.write(row, col, value, currency_style)
                 else:
                     sheet.write(row, col, value, cell_style)
 
             if row == 4:
                 # First row: Balance = Due Amount
-                sheet.write(row, 7, xlwt.Formula(f"G{row + 1}"),currency_style)
+                sheet.write(row, 13, xlwt.Formula(f"M{row + 1}"),currency_style)
             else:
                 # Subsequent rows: Balance = Previous Balance + Current Due Amount
-                sheet.write(row, 7, xlwt.Formula(f"H{row} + G{row + 1}"),currency_style)
+                sheet.write(row, 13, xlwt.Formula(f"N{row} + M{row + 1}"),currency_style)
 
 
             sheet.row(row).height_mismatch = True
