@@ -83,7 +83,7 @@ class AccountReport(models.Model):
     @api.model
     def _get_options_account_code_domain(self, options):
         domain = []
-        domain.append(('company_id', '=', self.env.user.company_id.id))
+        domain.append(('company_id', '=', self.env.company.id))
         if options.get('account_codes'):
             selected_account_code_ids = [int(code) for code in options['account_codes']]
             domain.append(('account_id', 'in', selected_account_code_ids))
